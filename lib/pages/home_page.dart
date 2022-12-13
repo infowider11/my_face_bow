@@ -63,6 +63,7 @@ class _HomePageState extends State<HomePage> {
                   child: ParagraphText(
                     'Capture Image to get the Occlusal plane orientation.',
                     textAlign: TextAlign.center,
+                    color: Colors.white,
                   ),
                 )
             ],
@@ -87,7 +88,7 @@ class _HomePageState extends State<HomePage> {
               GestureDetector(
                 onTap: () async {
                   if(file==null){
-                    file = await pickImage(false);
+                    file = await pickImage(true);
                   }
 
                   if (file != null) {
