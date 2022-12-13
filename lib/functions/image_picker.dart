@@ -75,34 +75,3 @@ Future<File?> pickImage(bool isGallery) async {
   }
 }
 
-Future<File?> pickVideo({bool isGallery = true}) async {
-  final ImagePicker picker = ImagePicker();
-  File? video;
-  String? videoFile;
-  try {
-    XFile? pickedVideo;
-    if (isGallery) {
-      pickedVideo = await picker.pickVideo(
-        source: ImageSource.gallery,
-      );
-    } else {
-      pickedVideo = await picker.pickVideo(source: ImageSource.camera);
-    }
-
-    int videoLength = await pickedVideo!.length();
-    print('the length of the video is');
-    print(videoLength);
-    if (videoLength > 20000000) {
-      showSnackbar('Video must be less than 20 mb');
-      return null;
-    } else {
-      print('prasoon---else image vide picker');
-    }
-    video = File(pickedVideo.path);
-    videoFile = pickedVideo.path;
-  } catch (e) {
-    print('Error in picking video $e');
-  }
-
-  return video;
-}

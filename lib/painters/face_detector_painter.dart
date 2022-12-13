@@ -78,10 +78,10 @@ class FaceDetectorPainter extends CustomPainter {
       FaceContour? upperLipTop = faceLandmarks[FaceContourType.upperLipTop];
       print('the ${face.landmarks}');
 
-      print(
-          'drawing contour line with left point ${leftEye} and right ${rightEye}  ${(rightEye!.points.length - 1 / 2).floor()}');
-      print(
-          'drawing contour  ${faces.length} line lip points ${upperLipBottom!.points.length}');
+      // print(
+      //     'drawing contour line with left point ${leftEye} and right ${rightEye}  ${(rightEye!.points.length - 1 / 2).floor()}');
+      // print(
+      //     'drawing contour  ${faces.length} line lip points ${upperLipBottom!.points.length}');
 
       /// line between the eyes  : INTER PUPILLARY LINE
       double interPupilaryLinex1 =

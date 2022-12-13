@@ -14,29 +14,30 @@ class DetectedImageView extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: Container(
-          child: Stack(
-            // fit: StackFit.expand,
-            children: <Widget>[
-              Container(
-                height: MediaQuery.of(context).size.width-32,
-                width: MediaQuery.of(context).size.width-32,
-                child: Image.file(
-                  file!,
-                  // fit: BoxFit.fill,
-                  alignment: Alignment.topLeft,
-
-                ),
-              ),
-              if (customPaint != null)
-                Positioned(
-                  left: 0,right: 0,top: 0,bottom: 0,
-                  child: customPaint!,
-                ),
-              // if (customPaint != null)
-              //   Align(
-              //     alignment: Alignment.center,
-              //     child: customPaint!,
-              //   ),
+          child: Column(
+            children: [
+              Stack(
+                // fit: StackFit.expand,
+                children: <Widget>[
+                  Image.file(
+                    file!,
+                    // fit: BoxFit.fill,
+                    alignment: Alignment.topLeft,
+                    height: MediaQuery.of(context).size.width,
+                    width: MediaQuery.of(context).size.width,
+                  ),
+                  if (customPaint != null)
+                    Positioned(
+                      left: 0,right: 0,top: 0,bottom: 0,
+                      child: customPaint!,
+                    ),
+                  // if (customPaint != null)
+                  //   Align(
+                  //     alignment: Alignment.center,
+                  //     child: customPaint!,
+                  //   ),
+                ],
+              )
             ],
           ),
         ),
