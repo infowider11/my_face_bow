@@ -18,14 +18,15 @@ Future<File?> pickImage(bool isGallery) async {
     if (isGallery) {
       pickedFile = await picker.pickImage(
         source: ImageSource.gallery,
-        imageQuality: 100,
+        imageQuality: 80,
         maxWidth: MediaQuery.of(MyGlobalKeys.navigatorKey.currentContext!).size.width,
       );
     } else {
       pickedFile = await picker.pickImage(
         source: ImageSource.camera,
-        imageQuality: 100,
+        imageQuality: 50,
         maxWidth: MediaQuery.of(MyGlobalKeys.navigatorKey.currentContext!).size.width,
+        maxHeight: MediaQuery.of(MyGlobalKeys.navigatorKey.currentContext!).size.width,
       );
     }
     print('the error is $pickedFile');
@@ -33,38 +34,38 @@ Future<File?> pickImage(bool isGallery) async {
     print('the length is');
     // print('size : ${length}');
     print('size: ${pickedFile.readAsBytes()}');
-    // File? croppedFile = await ImageCropper().cropImage(
-    //   cropStyle: CropStyle.circle,
-    //   // aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
-    //   compressQuality: 100,
-    //   aspectRatio:  CropAspectRatio(ratioX: 1,ratioY: 1),
-    //   sourcePath: pickedFile.path,
-    //   aspectRatioPresets: [
-    //     CropAspectRatioPreset.square,
-    //     // CropAspectRatioPreset.ratio3x2,
-    //     // CropAspectRatioPreset.original,
-    //     // CropAspectRatioPreset.ratio4x3,
-    //     // CropAspectRatioPreset.ratio16x9
-    //   ],
-    //   androidUiSettings: AndroidUiSettings(
-    //       activeControlsWidgetColor: MyColors.primaryColor,
-    //       toolbarTitle: 'Adjust your Post',
-    //       toolbarColor: MyColors.primaryColor,
-    //       toolbarWidgetColor: MyColors.whiteColor,
-    //       initAspectRatio: CropAspectRatioPreset.original,
-    //
-    //       lockAspectRatio: true),
-    //   iosUiSettings: IOSUiSettings(
-    //     minimumAspectRatio: 1.0,
-    //   )
-    // );
+    File? croppedFile = await ImageCropper().cropImage(
+      cropStyle: CropStyle.circle,
+      // aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+      compressQuality: 100,
+      aspectRatio:  CropAspectRatio(ratioX: 1,ratioY: 1),
+      sourcePath: pickedFile.path,
+      aspectRatioPresets: [
+        CropAspectRatioPreset.square,
+        // CropAspectRatioPreset.ratio3x2,
+        // CropAspectRatioPreset.original,
+        // CropAspectRatioPreset.ratio4x3,
+        // CropAspectRatioPreset.ratio16x9
+      ],
+      androidUiSettings: AndroidUiSettings(
+          activeControlsWidgetColor: MyColors.primaryColor,
+          toolbarTitle: 'Adjust your Post',
+          toolbarColor: MyColors.primaryColor,
+          toolbarWidgetColor: MyColors.whiteColor,
+          initAspectRatio: CropAspectRatioPreset.original,
 
-    _imageFile = pickedFile.path;
-    image = File(pickedFile.path);
-    print(pickedFile);
-    // _imageFile = croppedFile!.path;
-    // image = File(croppedFile.path);
-    // print(croppedFile);
+          lockAspectRatio: true),
+      iosUiSettings: IOSUiSettings(
+        minimumAspectRatio: 1.0,
+      )
+    );
+
+    // _imageFile = pickedFile.path;
+    // image = File(pickedFile.path);
+    // print(pickedFile);
+    _imageFile = croppedFile!.path;
+    image = File(croppedFile.path);
+    print(croppedFile);
     print(image);
     // setState(() {
     // });

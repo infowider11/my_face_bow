@@ -8,6 +8,7 @@ import 'package:my_face_bow/constants/navigation_functions.dart';
 import 'package:my_face_bow/functions/image_picker.dart';
 import 'package:my_face_bow/pages/detected_image_view.dart';
 import 'package:my_face_bow/painters/LinePainter.dart';
+import 'package:my_face_bow/widgets/showSnackbar.dart';
 
 import '../painters/face_detector_painter.dart';
 import '../widgets/CustomTexts.dart';
@@ -26,6 +27,9 @@ class _HomePageState extends State<HomePage> {
     options: FaceDetectorOptions(
       enableContours: true,
       enableClassification: true,
+      enableLandmarks: true,
+      performanceMode: FaceDetectorMode.accurate,
+
     ),
   );
   bool _canProcess = true;
@@ -78,7 +82,7 @@ class _HomePageState extends State<HomePage> {
             children: [
               GestureDetector(
                   onTap: () async {
-                    // file = await pickImage(true);
+                    file = await pickImage(true);
                   },
                   child: Icon(
                     Icons.info,
@@ -88,7 +92,7 @@ class _HomePageState extends State<HomePage> {
               GestureDetector(
                 onTap: () async {
                   if(file==null){
-                    file = await pickImage(true);
+                    file = await pickImage(false);
                   }
 
                   if (file != null) {
@@ -103,7 +107,9 @@ class _HomePageState extends State<HomePage> {
                     //     inputImage.inputImageData?.size??Size(400, 400),
                     //     inputImage.inputImageData!.imageRotation);
                     // _customPaint = CustomPaint(painter: painter);
-                    setState(() {});
+                    setState(() {
+                      print('hellow world');
+                    });
                     // push(context: context, screen: DetectedImageView(customPaint: _customPaint!, file: file!));
                   }
                 },
@@ -130,10 +136,23 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              Icon(
-                Icons.settings,
-                size: 40,
-                color: Colors.white,
+              GestureDetector(
+                onTap: ()async{
+                  if(file!=null){
+                    InputImage inputImage = InputImage.fromFile(file!);
+                    await processImage(inputImage);
+                    push(context: context, screen: DetectedImageView(customPaint: _customPaint!,
+                        file: file!));
+                  }else{
+                    showSnackbar('Please select image');
+                  }
+                  
+                },
+                child: Icon(
+                  Icons.settings,
+                  size: 40,
+                  color: Colors.white,
+                ),
               ),
             ],
           ),
@@ -144,6 +163,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> processImage(InputImage inputImage) async {
     print('processing image 10');
+    // showSnackbar('Processing image');
     if (!_canProcess) return;
     if (_isBusy) return;
     _isBusy = true;
@@ -152,6 +172,7 @@ class _HomePageState extends State<HomePage> {
     // });
     List<Face> faces = await _faceDetector.processImage(inputImage);
     print('the faces are ${faces}');
+    // showSnackbar('the detected faces are ${faces.length}');
     print(
         ' dddddddddd ${inputImage.inputImageData?.size != null} and ${inputImage.inputImageData?.imageRotation != null}');
     if (inputImage.inputImageData?.size != null &&
@@ -165,6 +186,7 @@ class _HomePageState extends State<HomePage> {
     } else {
       print('inside else ${inputImage.inputImageData?.imageRotation}');
       // String text = 'Faces found: ${faces.length}\n\n';
+      print('the height and width of painter is ${MediaQuery.of(context).size.width}');
       final painter = FaceDetectorPainter(
           faces,
           Size(MediaQuery.of(context).size.width,
