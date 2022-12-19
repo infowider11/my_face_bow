@@ -80,7 +80,7 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   GestureDetector(
                     behavior: HitTestBehavior.opaque,
-                    onTap: (){
+                    onTap: () {
                       _scaffoldStateKey.currentState?.closeEndDrawer();
                     },
                     child: Icon(
@@ -119,8 +119,12 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           vSizedBox2,
                           Container(
-                            padding: EdgeInsets.symmetric(horizontal: 4,vertical: 4),
-                            color: selectedScenarios.contains(allScenarios[index])?MyColors.redColor:null,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 4, vertical: 4),
+                            color:
+                                selectedScenarios.contains(allScenarios[index])
+                                    ? MyColors.redColor
+                                    : null,
                             child: SubHeadingText(
                               allScenarios[index].scenarioName,
                               color: Colors.white,
@@ -136,23 +140,37 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         body: Container(
-          color: Colors.black,
+          color: MyColors.primaryColor,
+          width: MediaQuery.of(context).size.width,
           // margin: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
 
           child: Stack(
             children: [
               Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      child: Center(child: ParagraphText  ('My Face Bow', color: Colors.white,fontSize: 24,)),
+                    ),
+                  ),
                   // if (_customPaint != null && file != null)
                   //   Expanded(
                   //       child: DetectedImageView(
                   //           customPaint: _customPaint!, file: file!))
                   // else
-                    Expanded(
+                  AspectRatio(
+                    aspectRatio: globalWidth / globalHeight,
+                    child: Container(
+                        // height: globalHeight-100,
+                        //   width: globalWidth,
+                        // clipBehavior: Clip.antiAlias,
                         child: CameraPreviewPage(
                       key: MyGlobalKeys.cameraPreviewPageStateKey,
                     )),
+                  ),
                   // Center(
                   //   child: ParagraphText(
                   //     'Capture Image to get the Occlusal plane orientation.',
@@ -183,38 +201,42 @@ class _HomePageState extends State<HomePage> {
                     color: Colors.white,
                   )),
               GestureDetector(
-                onTap:load?null: () async {
-                 if(selectedScenarios.length==0){
-                   showSnackbar('Please select the scenarios');
-                   // _scaffoldStateKey.currentState?.openEndDrawer();
-                 }else if(selectedScenarios[0].scenarioType!=ScenarioType.TWOPARRALLELLINES){
-                   showSnackbar('Coming Soon');
-                 }else{
-                   setState(() {
-                     load = true;
-                   });
-                   file = await MyGlobalKeys
-                       .cameraPreviewPageStateKey.currentState
-                       ?.takePictureInFileFormat();
-                   if (file != null) {
-                     // InputImage inputImage = InputImage.fromFilePath(file!.path);
+                onTap: load
+                    ? null
+                    : () async {
+                        if (selectedScenarios.length == 0) {
+                          showSnackbar('Please select the scenarios');
+                          // _scaffoldStateKey.currentState?.openEndDrawer();
+                        } else if (selectedScenarios[0].scenarioType !=
+                            ScenarioType.TWOPARRALLELLINES) {
+                          showSnackbar('Coming Soon');
+                        } else {
+                          setState(() {
+                            load = true;
+                          });
+                          file = await MyGlobalKeys
+                              .cameraPreviewPageStateKey.currentState
+                              ?.takePictureInFileFormat();
+                          if (file != null) {
+                            // InputImage inputImage = InputImage.fromFilePath(file!.path);
 
-                     bool result = await processImage(file!);
-                     if(result){
-                       await push(context: context, screen: DetectedImageView(customPaint: _customPaint!, file: file!));
-                     }else{
-                       showSnackbar('No Face Found. Please retry');
-                     }
+                            bool result = await processImage(file!);
+                            if (result) {
+                              await push(
+                                  context: context,
+                                  screen: DetectedImageView(
+                                      customPaint: _customPaint!, file: file!));
+                            } else {
+                              showSnackbar('No Face Found. Please retry');
+                            }
 
-                     // push(context: context, screen: DetectedImageView(customPaint: _customPaint!, file: file!))
-                   }
-                   setState(() {
-                     load = false;
-                   });
-                 }
-
-
-                },
+                            // push(context: context, screen: DetectedImageView(customPaint: _customPaint!, file: file!))
+                          }
+                          setState(() {
+                            load = false;
+                          });
+                        }
+                      },
                 child: Container(
                   child: Stack(
                     children: [
@@ -223,7 +245,6 @@ class _HomePageState extends State<HomePage> {
                         size: 70,
                         color: Colors.white,
                       ),
-
                       Positioned(
                         top: 0,
                         right: 0,
@@ -235,16 +256,15 @@ class _HomePageState extends State<HomePage> {
                           color: MyColors.primaryColor.withOpacity(0.6),
                         ),
                       ),
-                      if(load)
-                      Positioned(
-                        top: 20,
-                        right: 20,
-                        bottom: 20,
-                        left: 20,
-                        child: CircularProgressIndicator(
-                          color: Colors.white,
-                        )
-                      )
+                      if (load)
+                        Positioned(
+                            top: 20,
+                            right: 20,
+                            bottom: 20,
+                            left: 20,
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                            ))
                     ],
                   ),
                 ),
@@ -287,7 +307,7 @@ class _HomePageState extends State<HomePage> {
     // });
     List<Face> faces = await _faceDetector.processImage(inputImage);
 
-    if(faces.length==0){
+    if (faces.length == 0) {
       return false;
     }
     print('the faces are ${faces}');
