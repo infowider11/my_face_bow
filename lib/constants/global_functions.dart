@@ -1,9 +1,22 @@
 
+import 'dart:async';
+import 'dart:typed_data';
+import 'dart:ui' as UI;
 
+import 'package:flutter/services.dart';
 extension StringExtension on String {
   String capitalize() {
     return "${this[0].toUpperCase()}${substring(1)}";
   }
+}
+
+Future<UI.Image> loadUiImage(Uint8List uint8list) async {
+
+  final Completer<UI.Image> completer = Completer();
+  UI.decodeImageFromList(uint8list, (UI.Image img) {
+    return completer.complete(img);
+  });
+  return completer.future;
 }
 
 

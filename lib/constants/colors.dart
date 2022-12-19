@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-const full = 'MediaQuery.of(context).size.width';
 
 
 class MyColors{

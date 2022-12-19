@@ -97,6 +97,7 @@ class SubHeadingText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
+      textAlign: textAlign,
       style: TextStyle(
           color: color??Colors.black,
           fontWeight:fontWeight??FontWeight.w500,

@@ -3,14 +3,27 @@ import 'package:flutter/material.dart';
 import 'package:my_face_bow/constants/global_keys.dart';
 import 'package:my_face_bow/pages/home_page.dart';
 import 'package:my_face_bow/pages/splash_screen.dart';
+import 'package:my_face_bow/providers/global_provider.dart';
+import 'package:provider/provider.dart';
 
 import 'constants/global_data.dart';
+import 'functions/global_functions.dart';
 
 Future<void> main()async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  try {
+    WidgetsFlutterBinding.ensureInitialized();
+    cameras = await availableCameras();
+  } on CameraException catch (e) {
+    logError(e.code, e.description);
+  }
+
   cameras = await availableCameras();
-  runApp(const MyApp());
+  runApp(ChangeNotifierProvider(
+    create: (context) => GlobalProvider(),
+    child: const MyApp(),
+  ),);
 }
 
 class MyApp extends StatelessWidget {

@@ -4,15 +4,24 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
 import 'package:my_face_bow/constants/colors.dart';
+import 'package:my_face_bow/constants/global_functions.dart';
+import 'package:my_face_bow/constants/global_keys.dart';
 import 'package:my_face_bow/constants/navigation_functions.dart';
 import 'package:my_face_bow/functions/image_picker.dart';
+import 'package:my_face_bow/pages/about_page.dart';
 import 'package:my_face_bow/pages/detected_image_view.dart';
+import 'package:my_face_bow/pages/side_drawer.dart';
 import 'package:my_face_bow/painters/LinePainter.dart';
+import 'package:my_face_bow/widgets/custom_full_page_loader.dart';
 import 'package:my_face_bow/widgets/showSnackbar.dart';
-
+import 'dart:ui' as ui;
+import '../constants/global_data.dart';
+import '../constants/sized_box.dart';
+import '../modals/scenario_types.dart';
 import '../painters/face_detector_painter.dart';
 import '../widgets/CustomTexts.dart';
-import 'camera_view.dart';
+import 'CameraPreviewPage.dart';
+import '../rough_pages/camera_view.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -23,13 +32,14 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   File? file;
+  bool load = false;
+  List<ScenarioModal> selectedScenarios = [];
   final FaceDetector _faceDetector = FaceDetector(
     options: FaceDetectorOptions(
       enableContours: true,
       enableClassification: true,
       enableLandmarks: true,
       performanceMode: FaceDetectorMode.accurate,
-
     ),
   );
   bool _canProcess = true;
@@ -48,28 +58,111 @@ class _HomePageState extends State<HomePage> {
     super.dispose();
   }
 
+  GlobalKey<ScaffoldState> _scaffoldStateKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
+    // setGlobalAspectRatio(MediaQuery.of(context).size.aspectRatio, MediaQuery.of(context).size.width);
+    // print('the aspect ratio is ${globalAspectRatio} and width is ${MediaQuery.of(context).size.width}');
     return SafeArea(
       child: Scaffold(
+        key: _scaffoldStateKey,
+        endDrawer: Container(
+          // width: MediaQuery.of(context).size.width-100,
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 40),
+          decoration: BoxDecoration(
+            color: MyColors.primaryColor.withOpacity(0.9),
+          ),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: (){
+                      _scaffoldStateKey.currentState?.closeEndDrawer();
+                    },
+                    child: Icon(
+                      Icons.close,
+                      color: Colors.white,
+                      size: 30,
+                    ),
+                  ),
+                  MainHeadingText(
+                    'Scenerio Selection',
+                    color: Colors.white,
+                  ),
+                  Container(
+                    width: 30,
+                    height: 30,
+                  )
+                ],
+              ),
+              vSizedBox4,
+              Expanded(
+                child: ListView.builder(
+                  itemCount: allScenarios.length,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () async {
+                        // if (selectedScenarios.contains(allScenarios[index])) {
+                        //   selectedScenarios.remove(allScenarios[index]);
+                        // } else {
+                        //   selectedScenarios.add(allScenarios[index]);
+                        // }
+                        selectedScenarios = [];
+                        selectedScenarios.add(allScenarios[index]);
+                        setState(() {});
+                      },
+                      child: Column(
+                        children: [
+                          vSizedBox2,
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 4,vertical: 4),
+                            color: selectedScenarios.contains(allScenarios[index])?MyColors.redColor:null,
+                            child: SubHeadingText(
+                              allScenarios[index].scenarioName,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
         body: Container(
           color: Colors.black,
           // margin: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+
+          child: Stack(
             children: [
-              if (_customPaint != null && file != null)
-                Expanded(
-                    child: DetectedImageView(
-                        customPaint: _customPaint!, file: file!))
-              else
-                Center(
-                  child: ParagraphText(
-                    'Capture Image to get the Occlusal plane orientation.',
-                    textAlign: TextAlign.center,
-                    color: Colors.white,
-                  ),
-                )
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // if (_customPaint != null && file != null)
+                  //   Expanded(
+                  //       child: DetectedImageView(
+                  //           customPaint: _customPaint!, file: file!))
+                  // else
+                    Expanded(
+                        child: CameraPreviewPage(
+                      key: MyGlobalKeys.cameraPreviewPageStateKey,
+                    )),
+                  // Center(
+                  //   child: ParagraphText(
+                  //     'Capture Image to get the Occlusal plane orientation.',
+                  //     textAlign: TextAlign.center,
+                  //     color: Colors.white,
+                  //   ),
+                  // )
+                ],
+              ),
+              // if (load) CustomFullPageLoader(),
             ],
           ),
         ),
@@ -82,7 +175,7 @@ class _HomePageState extends State<HomePage> {
             children: [
               GestureDetector(
                   onTap: () async {
-                    file = await pickImage(true);
+                    push(context: context, screen: AboutUsPage());
                   },
                   child: Icon(
                     Icons.info,
@@ -90,28 +183,37 @@ class _HomePageState extends State<HomePage> {
                     color: Colors.white,
                   )),
               GestureDetector(
-                onTap: () async {
-                  if(file==null){
-                    file = await pickImage(false);
-                  }
+                onTap:load?null: () async {
+                 if(selectedScenarios.length==0){
+                   showSnackbar('Please select the scenarios');
+                   // _scaffoldStateKey.currentState?.openEndDrawer();
+                 }else if(selectedScenarios[0].scenarioType!=ScenarioType.TWOPARRALLELLINES){
+                   showSnackbar('Coming Soon');
+                 }else{
+                   setState(() {
+                     load = true;
+                   });
+                   file = await MyGlobalKeys
+                       .cameraPreviewPageStateKey.currentState
+                       ?.takePictureInFileFormat();
+                   if (file != null) {
+                     // InputImage inputImage = InputImage.fromFilePath(file!.path);
 
-                  if (file != null) {
-                    // InputImage inputImage = InputImage.fromFilePath(file!.path);
-                    InputImage inputImage = InputImage.fromFile(file!);
+                     bool result = await processImage(file!);
+                     if(result){
+                       await push(context: context, screen: DetectedImageView(customPaint: _customPaint!, file: file!));
+                     }else{
+                       showSnackbar('No Face Found. Please retry');
+                     }
 
-                    print('the image is ss $inputImage');
-                    await processImage(inputImage);
-                    // List<Face> faces = await _faceDetector.processImage(inputImage);
-                    // final painter = FaceDetectorPainter(
-                    //     faces,
-                    //     inputImage.inputImageData?.size??Size(400, 400),
-                    //     inputImage.inputImageData!.imageRotation);
-                    // _customPaint = CustomPaint(painter: painter);
-                    setState(() {
-                      print('hellow world');
-                    });
-                    // push(context: context, screen: DetectedImageView(customPaint: _customPaint!, file: file!));
-                  }
+                     // push(context: context, screen: DetectedImageView(customPaint: _customPaint!, file: file!))
+                   }
+                   setState(() {
+                     load = false;
+                   });
+                 }
+
+
                 },
                 child: Container(
                   child: Stack(
@@ -121,6 +223,7 @@ class _HomePageState extends State<HomePage> {
                         size: 70,
                         color: Colors.white,
                       ),
+
                       Positioned(
                         top: 0,
                         right: 0,
@@ -131,22 +234,33 @@ class _HomePageState extends State<HomePage> {
                           size: 60,
                           color: MyColors.primaryColor.withOpacity(0.6),
                         ),
+                      ),
+                      if(load)
+                      Positioned(
+                        top: 20,
+                        right: 20,
+                        bottom: 20,
+                        left: 20,
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                        )
                       )
                     ],
                   ),
                 ),
               ),
               GestureDetector(
-                onTap: ()async{
-                  if(file!=null){
-                    InputImage inputImage = InputImage.fromFile(file!);
-                    await processImage(inputImage);
-                    push(context: context, screen: DetectedImageView(customPaint: _customPaint!,
-                        file: file!));
-                  }else{
-                    showSnackbar('Please select image');
-                  }
-                  
+                onTap: () async {
+                  _scaffoldStateKey.currentState?.openEndDrawer();
+                  // if (file != null) {
+                  //   await processImage(file!);
+                  //   push(
+                  //       context: context,
+                  //       screen: DetectedImageView(
+                  //           customPaint: _customPaint!, file: file!));
+                  // } else {
+                  //   showSnackbar('Please select image');
+                  // }
                 },
                 child: Icon(
                   Icons.settings,
@@ -161,37 +275,46 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Future<void> processImage(InputImage inputImage) async {
+  Future<bool> processImage(File tempFile) async {
+    InputImage inputImage = InputImage.fromFile(tempFile!);
     print('processing image 10');
     // showSnackbar('Processing image');
-    if (!_canProcess) return;
-    if (_isBusy) return;
+    if (!_canProcess) return false;
+    if (_isBusy) return false;
     _isBusy = true;
     // setState(() {
     //   _text = '';
     // });
     List<Face> faces = await _faceDetector.processImage(inputImage);
+
+    if(faces.length==0){
+      return false;
+    }
     print('the faces are ${faces}');
+    ui.Image imageFormatFile = await loadUiImage(file!.readAsBytesSync());
     // showSnackbar('the detected faces are ${faces.length}');
     print(
         ' dddddddddd ${inputImage.inputImageData?.size != null} and ${inputImage.inputImageData?.imageRotation != null}');
+
     if (inputImage.inputImageData?.size != null &&
         inputImage.inputImageData?.imageRotation != null) {
       print('inside if');
       final painter = FaceDetectorPainter(
           faces,
           inputImage.inputImageData!.size,
-          inputImage.inputImageData!.imageRotation);
+          inputImage.inputImageData!.imageRotation,
+          imageFormatFile);
       _customPaint = CustomPaint(painter: painter);
     } else {
       print('inside else ${inputImage.inputImageData?.imageRotation}');
       // String text = 'Faces found: ${faces.length}\n\n';
-      print('the height and width of painter is ${MediaQuery.of(context).size.width}');
+      print('the height and width of painter is ${globalWidth}');
       final painter = FaceDetectorPainter(
-          faces,
-          Size(MediaQuery.of(context).size.width,
-              MediaQuery.of(context).size.width),
-          InputImageRotation.rotation0deg);
+        faces,
+        Size(globalWidth, globalHeight),
+        InputImageRotation.rotation0deg,
+        imageFormatFile,
+      );
       _customPaint = CustomPaint(painter: painter);
       // for (final face in faces) {
       //   text += 'face: ${face.boundingBox}\n\n';
@@ -204,5 +327,6 @@ class _HomePageState extends State<HomePage> {
     if (mounted) {
       setState(() {});
     }
+    return true;
   }
 }
