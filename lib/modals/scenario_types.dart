@@ -24,14 +24,14 @@ class ScenarioModal{
 
 
 List<ScenarioModal>  allScenarios = [
-  ScenarioModal(scenarioName: 'Two Parallel Lines', scenarioType: ScenarioType.TWOPARRALLELLINES),
-  ScenarioModal(scenarioName: 'Lower Occlusion plane orientation', scenarioType: ScenarioType.LOWEROCLUSALORIENTATION),
-  ScenarioModal(scenarioName: 'Labial Fullness', scenarioType: ScenarioType.LOWEROCLUSALORIENTATION),
-  ScenarioModal(scenarioName: 'Vertical Relation', scenarioType: ScenarioType.VERTICALRELATION),
-  ScenarioModal(scenarioName: 'Scenario Type 5', scenarioType: ScenarioType.SCENARIO5),
-  ScenarioModal(scenarioName: 'Scenario Type 6', scenarioType: ScenarioType.SCENARIO6),
-  ScenarioModal(scenarioName: 'Scenario Type 7', scenarioType: ScenarioType.SCENARIO7),
-  ScenarioModal(scenarioName: 'Scenario Type 8', scenarioType: ScenarioType.SCENARIO8),
-  ScenarioModal(scenarioName: 'Scenario Type 9', scenarioType: ScenarioType.SCENARIO9),
+  ScenarioModal(scenarioName: 'Upper Occlusion Plane Orientation(Frontal)', scenarioType: ScenarioType.TWOPARRALLELLINES),
+  ScenarioModal(scenarioName: 'Upper Occlusion Plane Orientation(Lateral)', scenarioType: ScenarioType.LOWEROCLUSALORIENTATION),
+  ScenarioModal(scenarioName: 'Lower Occlusion Plane Orientation(Lateral)', scenarioType: ScenarioType.LOWEROCLUSALORIENTATION),
+  ScenarioModal(scenarioName: 'Labial Fullness(Naso-labial angle)', scenarioType: ScenarioType.VERTICALRELATION),
+  ScenarioModal(scenarioName: 'Outline Teeth Position', scenarioType: ScenarioType.SCENARIO5),
+  ScenarioModal(scenarioName: 'Vertical Relation', scenarioType: ScenarioType.SCENARIO6),
+  ScenarioModal(scenarioName: 'Face Profile', scenarioType: ScenarioType.SCENARIO7),
+  // ScenarioModal(scenarioName: 'Scenario Type 8', scenarioType: ScenarioType.SCENARIO8),
+  // ScenarioModal(scenarioName: 'Scenario Type 9', scenarioType: ScenarioType.SCENARIO9),
 
 ];

@@ -12,6 +12,7 @@ import 'package:my_face_bow/functions/global_functions.dart';
 import 'package:my_face_bow/functions/image_picker.dart';
 import 'package:my_face_bow/pages/about_page.dart';
 import 'package:my_face_bow/pages/detected_image_view.dart';
+import 'package:my_face_bow/pages/info_page.dart';
 import 'package:my_face_bow/pages/side_drawer.dart';
 import 'package:my_face_bow/painters/LinePainter.dart';
 import 'package:my_face_bow/widgets/custom_full_page_loader.dart';
@@ -74,7 +75,7 @@ class _HomePageState extends State<HomePage> {
           // width: MediaQuery.of(context).size.width-100,
           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 40),
           decoration: BoxDecoration(
-            color: MyColors.primaryColor.withOpacity(0.9),
+            color: MyColors.lightBlueColor.withOpacity(0.9),
           ),
           child: Column(
             children: [
@@ -143,7 +144,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         body: Container(
-          color: MyColors.primaryColor,
+          color: MyColors.lightBlueColor,
           width: MediaQuery.of(context).size.width,
           // margin: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
 
@@ -156,7 +157,7 @@ class _HomePageState extends State<HomePage> {
                   Expanded(
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 16),
-                      child: Center(child: ParagraphText  ('My Face Bow', color: Colors.white,fontSize: 24,)),
+                      child: Center(child: ParagraphText  ('MyFaceBow', color: Colors.white,fontSize: 24,)),
                     ),
                   ),
                   // if (_customPaint != null && file != null)
@@ -190,13 +191,13 @@ class _HomePageState extends State<HomePage> {
         bottomNavigationBar: Container(
           height: 80,
           padding: EdgeInsets.symmetric(horizontal: 40),
-          color: MyColors.primaryColor,
+          color: MyColors.lightBlueColor,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               GestureDetector(
                   onTap: () async {
-                    push(context: context, screen: AboutUsPage());
+                    push(context: context, screen: InfoPage());
                   },
                   child: Icon(
                     Icons.info,
@@ -263,7 +264,7 @@ class _HomePageState extends State<HomePage> {
                         child: Icon(
                           Icons.circle,
                           size: 60,
-                          color: MyColors.primaryColor.withOpacity(0.6),
+                          color: MyColors.lightBlueColor.withOpacity(0.6),
                         ),
                       ),
                       if (load)

@@ -4,7 +4,8 @@ class MyImages{
   static const String baseIconsUrl = 'assets/icons/';
 
 
-  static const appLogo = '${baseImageUrl}applogo.png';
+  // static const appLogo = '${baseImageUrl}applogo.png';
+  static const appLogo = '${baseImageUrl}applogonew.png';
 
 
 }

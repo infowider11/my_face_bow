@@ -48,7 +48,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
       ),
       body:
       load?
-      Center(child: CircularProgressIndicator(color: MyColors.primaryColor,)):
+      Center(child: CircularProgressIndicator(color: MyColors.lightBlueColor,)):
       SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 20),

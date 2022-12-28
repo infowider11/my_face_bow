@@ -16,7 +16,7 @@ class CustomFullPageLoader extends StatelessWidget {
       color: Colors.white.withOpacity(0.4),
       child: Center(
           child: cupertino.CupertinoActivityIndicator(
-            color:color?? MyColors.primaryColor,
+            color:color?? MyColors.lightBlueColor,
             radius: 24,
           )
       ),

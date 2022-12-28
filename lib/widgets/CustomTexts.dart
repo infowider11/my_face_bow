@@ -10,6 +10,7 @@ class MainHeadingText extends StatelessWidget {
   final FontWeight? fontWeight;
   final String? fontFamily;
   final TextAlign? textAlign;
+  final TextDecoration? textDecoration;
   const MainHeadingText(
       this.text,
       {
@@ -21,6 +22,7 @@ class MainHeadingText extends StatelessWidget {
     this.fontFamily,
     this.textAlign,
     this.height,
+        this.textDecoration
   }) : super(key: key);
 
   @override
@@ -34,6 +36,7 @@ class MainHeadingText extends StatelessWidget {
         fontSize: fontSize??20,
         // fontFamily:
         fontFamily: fontFamily,
+        decoration: textDecoration,
         height: height,
       ),
     );
@@ -82,6 +85,7 @@ class SubHeadingText extends StatelessWidget {
   final String? fontFamily;
   final TextAlign textAlign;
   final bool underlined;
+  final double? height;
   const SubHeadingText(this.text,{
     Key? key,
 
@@ -89,6 +93,7 @@ class SubHeadingText extends StatelessWidget {
     this.fontSize,
     this.fontWeight,
     this.fontFamily,
+    this.height,
     this.textAlign=TextAlign.start,
     this.underlined = false,
   }) : super(key: key);
@@ -104,6 +109,7 @@ class SubHeadingText extends StatelessWidget {
           fontSize: fontSize??16,
           // fontFamily:
           fontFamily: fontFamily,
+        height: height,
         decoration:underlined? TextDecoration.underline:null,
       ),
     );
@@ -120,6 +126,7 @@ class ParagraphText extends StatelessWidget {
   final String? fontFamily;
   final TextAlign? textAlign;
   final bool underlined;
+  final double? height;
   const ParagraphText( this.text,{
     Key? key,
     // required this.text,
@@ -128,6 +135,7 @@ class ParagraphText extends StatelessWidget {
     this.fontWeight,
     this.fontFamily,
     this.textAlign,
+    this.height,
     this.underlined = false,
   }) : super(key: key);
 
@@ -141,6 +149,7 @@ class ParagraphText extends StatelessWidget {
           fontWeight:fontWeight??FontWeight.w400,
           fontSize: fontSize??14,
           // fontFamily:
+        height: height,
           fontFamily: fontFamily,
         decoration:underlined? TextDecoration.underline:null,
       ),

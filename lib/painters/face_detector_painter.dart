@@ -92,15 +92,16 @@ class FaceDetectorPainter extends CustomPainter {
         // paintContour(FaceContourType.noseBottom);
         // paintContour(FaceContourType.leftCheek);
         // paintContour(FaceContourType.rightCheek);
-        Map<FaceContourType, FaceContour?> faceLandmarks = face.contours;
-        FaceContour? leftEye = faceLandmarks[FaceContourType.leftEye];
-        FaceContour? rightEye = faceLandmarks[FaceContourType.rightEye];
-        FaceContour? lowerLipTop = faceLandmarks[FaceContourType.lowerLipTop];
+        Map<FaceContourType, FaceContour?> faceContoursMap = face.contours;
+        Map<FaceLandmarkType, FaceLandmark?> faceLandmarkMap = face.landmarks;
+        FaceContour? leftEye = faceContoursMap[FaceContourType.leftEye];
+        FaceContour? rightEye = faceContoursMap[FaceContourType.rightEye];
+        FaceContour? lowerLipTop = faceContoursMap[FaceContourType.lowerLipTop];
         FaceContour? lowerLipBottom =
-        faceLandmarks[FaceContourType.lowerLipBottom];
+        faceContoursMap[FaceContourType.lowerLipBottom];
         FaceContour? upperLipBottom =
-        faceLandmarks[FaceContourType.upperLipBottom];
-        FaceContour? upperLipTop = faceLandmarks[FaceContourType.upperLipTop];
+        faceContoursMap[FaceContourType.upperLipBottom];
+        FaceContour? upperLipTop = faceContoursMap[FaceContourType.upperLipTop];
         print('the ${face.landmarks}');
 
         // print(
@@ -164,7 +165,7 @@ class FaceDetectorPainter extends CustomPainter {
                 translateX(x3, rotation, size, absoluteImageSize),
                 translateY(y3, rotation, size, absoluteImageSize),
               ),
-              paint..color = MyColors.primaryColor,
+              paint..color = MyColors.lightBlueColor,
             );
           }
         }
@@ -189,13 +190,13 @@ class FaceDetectorPainter extends CustomPainter {
             increamentSize: 40);
 
         /// line of lower lips  UPPER RIM LINE
-        double upperRimLinex1 = upperLipBottom!.points[0].x.toDouble();
-        double upperRimLiney1 = upperLipBottom!.points[0].y.toDouble();
+        double upperRimLinex1 = upperLipBottom!.points[2].x.toDouble();
+        double upperRimLiney1 = upperLipBottom!.points[2].y.toDouble();
         double upperRimLinex2 = upperLipBottom!
-            .points[upperLipBottom!.points.length - 1].x
+            .points[upperLipBottom!.points.length - 3].x
             .toDouble();
         double upperRimLiney2 = upperLipBottom!
-            .points[upperLipBottom!.points.length - 1].y
+            .points[upperLipBottom!.points.length - 3].y
             .toDouble();
 
         getFirstPoint(
@@ -203,30 +204,27 @@ class FaceDetectorPainter extends CustomPainter {
             y1: upperRimLiney1,
             x2: upperRimLinex2,
             y2: upperRimLiney2,
-            increamentSize: 50);
-        // canvas.drawLine(
-        //   Offset(
-        //     translateX(upperRimLinex1, rotation, size,
-        //         absoluteImageSize),
-        //     translateY(upperLipBottom!.points[0].y.toDouble(), rotation, size,
-        //         absoluteImageSize),
-        //   ),
-        //   Offset(
-        //     translateX(
-        //         upperLipBottom!.points[upperLipBottom!.points.length - 1].x
-        //             .toDouble(),
-        //         rotation,
-        //         size,
-        //         absoluteImageSize),
-        //     translateY(
-        //         upperLipBottom!.points[upperLipBottom!.points.length - 1].y
-        //             .toDouble(),
-        //         rotation,
-        //         size,
-        //         absoluteImageSize),
-        //   ),
-        //   paint..color = MyColors.redColor,
-        // );
+            increamentSize: 80);
+
+
+
+
+        // FaceLandmark? leftEar = faceLandmarkMap[FaceLandmarkType.leftEar];
+        // FaceLandmark? rightEar = faceLandmarkMap[FaceLandmarkType.rightEar];
+        //
+        // print('the ear is ${leftEar}  ffff ${leftEar?.position.x} ');
+        // if(leftEar!=null && rightEar!=null){
+        //   double tempx1 = leftEar!.position.x + 0.0;
+        //   double tempy1 = leftEar!.position.y + 0.0;
+        //   double tempx2 = rightEar!.position.x + 0.0;
+        //   double tempy2 =rightEar!.position.y + 0.0;
+        //   getFirstPoint(
+        //       x1: tempx1,
+        //       y1: tempy1,
+        //       x2: tempx2,
+        //       y2: tempy2,
+        //       increamentSize: 50);
+        // }
       }catch(e){
         print('the face could not be painted ${face}. Error:  $e');
       }

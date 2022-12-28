@@ -19,7 +19,7 @@ class DetectedImageView extends StatelessWidget {
 
 
     return Scaffold(
-      backgroundColor: MyColors.primaryColor,
+      backgroundColor: MyColors.lightBlueColor,
 
       body: Container(
         child: Stack(

@@ -14,7 +14,7 @@ class CustomLoader extends StatelessWidget {
     // );
     return Center(
         child: cupertino.CupertinoActivityIndicator(
-          color:color?? MyColors.primaryColor,
+          color:color?? MyColors.lightBlueColor,
           radius: 24,
         )
     );

@@ -48,9 +48,9 @@ Future<File?> pickImage(bool isGallery) async {
         // CropAspectRatioPreset.ratio16x9
       ],
       androidUiSettings: AndroidUiSettings(
-          activeControlsWidgetColor: MyColors.primaryColor,
+          activeControlsWidgetColor: MyColors.lightBlueColor,
           toolbarTitle: 'Adjust your Post',
-          toolbarColor: MyColors.primaryColor,
+          toolbarColor: MyColors.lightBlueColor,
           toolbarWidgetColor: MyColors.whiteColor,
           initAspectRatio: CropAspectRatioPreset.original,
 
