@@ -6,6 +6,7 @@ import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
 import 'package:my_face_bow/constants/colors.dart';
 import 'package:flutter/painting.dart' as paintingFile;
 import 'package:my_face_bow/constants/global_data.dart';
+import 'package:my_face_bow/widgets/showSnackbar.dart';
 import '../functions/coordinates_translator.dart';
 
 class FaceDetectorPainter extends CustomPainter {
@@ -205,9 +206,19 @@ class FaceDetectorPainter extends CustomPainter {
             x2: upperRimLinex2,
             y2: upperRimLiney2,
             increamentSize: 80);
+        
+        
+        if(face.headEulerAngleZ!=null){
+          if(face.headEulerAngleZ!>15 || face.headEulerAngleZ!<(-15) || face.headEulerAngleX!>15 || face.headEulerAngleX!<(-15) || face.headEulerAngleY!>15 || face.headEulerAngleY!<(-15)){
+            print('zsssssss');
+            showSnackbar('The measurements may be wrong. Please put your face in a straight position', seconds: 2);
+          }
+        }
 
 
+        print('the other para are euler angle x${face.headEulerAngleX} .... y ${face.headEulerAngleY}.... z ${face.headEulerAngleZ}');
 
+        // the other para are euler angle x5.755882263183594 .... y 4.462555408477783.... z 19.31239891052246
 
         // FaceLandmark? leftEar = faceLandmarkMap[FaceLandmarkType.leftEar];
         // FaceLandmark? rightEar = faceLandmarkMap[FaceLandmarkType.rightEar];
