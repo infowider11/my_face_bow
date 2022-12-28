@@ -3,10 +3,12 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:my_face_bow/constants/colors.dart';
 import 'package:my_face_bow/constants/global_functions.dart';
 import 'package:my_face_bow/constants/global_keys.dart';
 import 'package:my_face_bow/constants/navigation_functions.dart';
+import 'package:my_face_bow/functions/global_functions.dart';
 import 'package:my_face_bow/functions/image_picker.dart';
 import 'package:my_face_bow/pages/about_page.dart';
 import 'package:my_face_bow/pages/detected_image_view.dart';
@@ -14,6 +16,7 @@ import 'package:my_face_bow/pages/side_drawer.dart';
 import 'package:my_face_bow/painters/LinePainter.dart';
 import 'package:my_face_bow/widgets/custom_full_page_loader.dart';
 import 'package:my_face_bow/widgets/showSnackbar.dart';
+import 'package:path_provider/path_provider.dart';
 import 'dart:ui' as ui;
 import '../constants/global_data.dart';
 import '../constants/sized_box.dart';
@@ -220,6 +223,13 @@ class _HomePageState extends State<HomePage> {
                           if (file != null) {
                             // InputImage inputImage = InputImage.fromFilePath(file!.path);
 
+
+                            Directory path  = await getApplicationSupportDirectory();
+                            print('the path is ${path.path}');
+
+                            file = await testCompressAndGetFile(file!, path.path + '/temp.jpg');
+                            print('the compressed image is $file');
+
                             bool result = await processImage(file!);
                             if (result) {
                               await push(
@@ -296,8 +306,11 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<bool> processImage(File tempFile) async {
+
+
+
     InputImage inputImage = InputImage.fromFile(tempFile!);
-    print('processing image 10');
+    print('processing image 10 $_canProcess $_isBusy');
     // showSnackbar('Processing image');
     if (!_canProcess) return false;
     if (_isBusy) return false;
@@ -306,11 +319,12 @@ class _HomePageState extends State<HomePage> {
     //   _text = '';
     // });
     List<Face> faces = await _faceDetector.processImage(inputImage);
-
+    print('the faces are ${faces}');
     if (faces.length == 0) {
+      _isBusy = false;
       return false;
     }
-    print('the faces are ${faces}');
+
     ui.Image imageFormatFile = await loadUiImage(file!.readAsBytesSync());
     // showSnackbar('the detected faces are ${faces.length}');
     print(
