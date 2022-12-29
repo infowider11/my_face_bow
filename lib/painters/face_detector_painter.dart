@@ -6,8 +6,10 @@ import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
 import 'package:my_face_bow/constants/colors.dart';
 import 'package:flutter/painting.dart' as paintingFile;
 import 'package:my_face_bow/constants/global_data.dart';
+import 'package:my_face_bow/constants/global_keys.dart';
 import 'package:my_face_bow/widgets/showSnackbar.dart';
 import '../functions/coordinates_translator.dart';
+// int errorCount = 0;
 
 class FaceDetectorPainter extends CustomPainter {
   FaceDetectorPainter(
@@ -205,13 +207,15 @@ class FaceDetectorPainter extends CustomPainter {
             y1: upperRimLiney1,
             x2: upperRimLinex2,
             y2: upperRimLiney2,
-            increamentSize: 80);
-        
-        
+            increamentSize: 90);
+
+
         if(face.headEulerAngleZ!=null){
           if(face.headEulerAngleZ!>15 || face.headEulerAngleZ!<(-15) || face.headEulerAngleX!>15 || face.headEulerAngleX!<(-15) || face.headEulerAngleY!>15 || face.headEulerAngleY!<(-15)){
-            print('zsssssss');
-            showSnackbar('The measurements may be wrong. Please put your face in a straight position', seconds: 2);
+            print('zsssssss ${MyGlobalKeys.detectedImageViewStateKey.currentState}');
+            // errorCount++;
+            // showSnackbar('The measurements may be wrong. Please put your face in a straight position', seconds: 2);
+            MyGlobalKeys.homePageStateKey.currentState?.showErrorMessage();
           }
         }
 

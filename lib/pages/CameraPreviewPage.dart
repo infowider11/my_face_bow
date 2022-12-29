@@ -4,6 +4,8 @@ import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:my_face_bow/constants/colors.dart';
+import 'package:my_face_bow/constants/image_urls.dart';
 
 import '../constants/global_data.dart';
 import '../functions/global_functions.dart';
@@ -56,7 +58,14 @@ class CameraPreviewPageState extends State<CameraPreviewPage> with AutomaticKeep
               // });
             },
           ),
-        )
+        ),
+        // Positioned(
+        //   left: 32,
+        //   right: 32,
+        //   top: 22,
+        //   bottom: 22,
+        //   child: Image.asset(MyImages.faceSkeleton, color: MyColors.primaryColor,),
+        // )
       ],
     );
   }

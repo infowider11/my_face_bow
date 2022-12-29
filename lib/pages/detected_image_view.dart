@@ -3,16 +3,27 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:my_face_bow/constants/colors.dart';
 import 'package:my_face_bow/constants/sized_box.dart';
+import 'package:my_face_bow/providers/global_provider.dart';
 import 'package:my_face_bow/widgets/CustomTexts.dart';
+import 'package:provider/provider.dart';
 
 import '../constants/global_data.dart';
 
-class DetectedImageView extends StatelessWidget {
+class DetectedImageView extends StatefulWidget {
   final CustomPaint customPaint;
   final File file;
   const DetectedImageView(
-      {Key? key, required this.customPaint, required this.file})
+      {required Key key, required this.customPaint, required this.file})
       : super(key: key);
+
+  @override
+  State<DetectedImageView> createState() => DetectedImageViewState();
+}
+
+class DetectedImageViewState extends State<DetectedImageView> {
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +55,7 @@ class DetectedImageView extends StatelessWidget {
                     // color: Colors.green.withOpacity(0.2),
                     height: globalAspectRatio*(MediaQuery.of(context).size.width),
                     width:MediaQuery.of(context).size.width,
-                    child: customPaint!,),
+                    child: widget.customPaint!,),
                 ),
                 // Stack(
                 //   // fit: StackFit.expand,

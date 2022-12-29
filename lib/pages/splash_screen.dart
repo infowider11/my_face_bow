@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_face_bow/constants/colors.dart';
+import 'package:my_face_bow/constants/global_keys.dart';
 import 'package:my_face_bow/constants/image_urls.dart';
 import 'package:my_face_bow/constants/navigation_functions.dart';
 import 'package:my_face_bow/constants/sized_box.dart';
@@ -18,7 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
     await Future.delayed(Duration(seconds: 2)).then((value){
 
     });
-    await push(context: context, screen: HomePage());
+    await push(context: context, screen: HomePage(key: MyGlobalKeys.homePageStateKey,));
     pushToHomePage();
 
   }
