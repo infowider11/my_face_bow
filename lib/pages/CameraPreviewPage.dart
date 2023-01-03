@@ -400,7 +400,7 @@ class CameraPreviewPageState extends State<CameraPreviewPage>
       print('I am listening.....2');
       final XFile file = await Provider.of<GlobalProvider>(context, listen: false).controller!.takePicture();
       print('I am listening.....3');
-      await Provider.of<GlobalProvider>(context, listen: false).controller!.startImageStream(processCameraImage);
+      // await Provider.of<GlobalProvider>(context, listen: false).controller!.startImageStream(processCameraImage);
       print('I am listening.....4');
       return File(file.path);
     } on CameraException catch (e) {
