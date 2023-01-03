@@ -16,35 +16,38 @@ class FaceDetectorPainter extends CustomPainter {
     this.faces,
     this.absoluteImageSize,
     this.rotation,
+      {
     this.image,
-  );
+  });
 
   final List<Face> faces;
   final Size absoluteImageSize;
   final InputImageRotation rotation;
-  final UI.Image image;
+  final UI.Image? image;
 
   @override
   void paint(Canvas canvas, Size size) {
     print('the paint size is $size');
     final Paint paint = Paint()
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 2.0
+      ..strokeWidth = 1.4
       ..color = Colors.red;
     void _paintBackgroundImage(Canvas canvas) {
-      if (image == null) {
-        return;
-      }
-      final UI.Rect rect = UI.Offset.zero & size;
-      final Size imageSize =
-      Size(image.width.toDouble(), image.height.toDouble());
-      FittedSizes sizes = applyBoxFit(BoxFit.contain, imageSize, size);
-      final Rect inputSubRect =
-      Alignment.center.inscribe(sizes.source, Offset.zero & imageSize);
-      final Rect outputSubRect =
-      Alignment.center.inscribe(sizes.destination, rect);
+      if (image != null) {
+        print('all the points are faceeeee');
+        final UI.Rect rect = UI.Offset.zero & size;
+        final Size imageSize =
+        Size(image!.width.toDouble(), image!.height.toDouble());
+        FittedSizes sizes = applyBoxFit(BoxFit.contain, imageSize, size);
+        final Rect inputSubRect =
+        Alignment.center.inscribe(sizes.source, Offset.zero & imageSize);
+        final Rect outputSubRect =
+        Alignment.center.inscribe(sizes.destination, rect);
 
-      canvas.drawImageRect(image, inputSubRect, outputSubRect, Paint());
+        canvas.drawImageRect(image!, inputSubRect, outputSubRect, Paint());
+      }
+
+
 
     }
 

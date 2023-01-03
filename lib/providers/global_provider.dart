@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:my_face_bow/constants/global_keys.dart';
@@ -10,6 +11,20 @@ import '../widgets/showSnackbar.dart';
 
 class GlobalProvider extends ChangeNotifier{
   File? file;
+
+  CameraController? _controller;
+
+
+  CameraController? get controller => _controller;
+
+  updateCameraController(CameraController? controller){
+    if(_controller!=null){
+      _controller!.dispose();
+      _controller= null;
+    }
+    _controller = controller;
+
+  }
 
 
   int photoErrorCounter = 0;

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:my_face_bow/constants/global_keys.dart';
 import 'package:my_face_bow/pages/home_page.dart';
 import 'package:my_face_bow/pages/splash_screen.dart';
+import 'package:my_face_bow/providers/PaintProvider.dart';
 import 'package:my_face_bow/providers/global_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -20,10 +21,21 @@ Future<void> main()async {
   }
 
   cameras = await availableCameras();
-  runApp(ChangeNotifierProvider(
-    create: (context) => GlobalProvider(),
-    child: const MyApp(),
-  ),);
+  // runApp(ChangeNotifierProvider(
+  //   create: (context) => GlobalProvider(),
+  //   child: const MyApp(),
+  // ),);
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => PaintProvider()),
+        ChangeNotifierProvider(create: (context) => GlobalProvider()),
+        // Provider(create: (context) => PaintProvider()),
+        // Provider(create: (context) => GlobalProvider()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
