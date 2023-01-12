@@ -23,8 +23,9 @@ class GlobalProvider extends ChangeNotifier{
       _controller= null;
     }
     _controller = controller;
-
+    notifyListeners();
   }
+
 
 
   int photoErrorCounter = 0;

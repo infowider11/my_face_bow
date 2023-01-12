@@ -200,13 +200,16 @@ class HomePageState extends State<HomePage> {
                             key: MyGlobalKeys.cameraPreviewPageStateKey,
                             // customPaint: _customPaint,
                             onImage: (
-                              inputImage,
-                            ) {
-                              // print('inside on image');
-                              processImage(inputImage, fromCamera: true);
-                              // processImageFromCamera(inputImage);
+                                inputImage,
+                                ) {
+
+
+
+
+                                processImage(inputImage, fromCamera: true);
                             },
                           ),
+
                         ),
                         // if (_customPaint != null) _customPaint!,
                       ],
@@ -249,10 +252,6 @@ class HomePageState extends State<HomePage> {
                           if (globalData.selectedScenarios.length == 0) {
                             showSnackbar('Please select the scenarios');
                             // _scaffoldStateKey.currentState?.openEndDrawer();
-                          } else if (globalData
-                                  .selectedScenarios[0].scenarioType !=
-                              ScenarioType.TWOPARRALLELLINES) {
-                            showSnackbar('Coming Soon');
                           } else {
                             setState(() {
                               load = true;

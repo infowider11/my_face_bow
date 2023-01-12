@@ -11,7 +11,7 @@ class MyGlobalKeys{
 
   static final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   static final GlobalKey<CameraPreviewPageState> cameraPreviewPageStateKey = GlobalKey<CameraPreviewPageState>();
-  static final GlobalKey<CameraViewState> cameraViewPageStateKey = GlobalKey<CameraViewState>();
+  // static final GlobalKey<CameraViewState> cameraViewPageStateKey = GlobalKey<CameraViewState>();
   static final GlobalKey<DetectedImageViewState> detectedImageViewStateKey = GlobalKey<DetectedImageViewState>();
   static final GlobalKey<HomePageState> homePageStateKey = GlobalKey<HomePageState>();
 

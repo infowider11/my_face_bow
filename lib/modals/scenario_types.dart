@@ -1,13 +1,11 @@
 enum ScenarioType{
-  TWOPARRALLELLINES,
-  LOWEROCLUSALORIENTATION,
+  UPPEROCCULSIONFRONTALORIENTATION,
+  UPPEROCCULSIONLATERALORIENTATION,
+  LOWEROCLUSALPLANEORIENTATION,
   LABIALFULLNESS,
+  OUTLINETEETHPOSITION,
   VERTICALRELATION,
-  SCENARIO5,
-  SCENARIO6,
-  SCENARIO7,
-  SCENARIO8,
-  SCENARIO9,
+  FACEPROFILE,
 }
 
 class ScenarioModal{
@@ -24,13 +22,13 @@ class ScenarioModal{
 
 
 List<ScenarioModal>  allScenarios = [
-  ScenarioModal(scenarioName: 'Upper Occlusion Plane Orientation(Frontal)', scenarioType: ScenarioType.TWOPARRALLELLINES),
-  ScenarioModal(scenarioName: 'Upper Occlusion Plane Orientation(Lateral)', scenarioType: ScenarioType.LOWEROCLUSALORIENTATION),
-  ScenarioModal(scenarioName: 'Lower Occlusion Plane Orientation(Lateral)', scenarioType: ScenarioType.LOWEROCLUSALORIENTATION),
-  ScenarioModal(scenarioName: 'Labial Fullness(Naso-labial angle)', scenarioType: ScenarioType.VERTICALRELATION),
-  ScenarioModal(scenarioName: 'Outline Teeth Position', scenarioType: ScenarioType.SCENARIO5),
-  ScenarioModal(scenarioName: 'Vertical Relation', scenarioType: ScenarioType.SCENARIO6),
-  ScenarioModal(scenarioName: 'Face Profile', scenarioType: ScenarioType.SCENARIO7),
+  ScenarioModal(scenarioName: 'Upper Occlusion Plane Orientation(Frontal)', scenarioType: ScenarioType.UPPEROCCULSIONFRONTALORIENTATION),
+  ScenarioModal(scenarioName: 'Upper Occlusion Plane Orientation(Lateral)', scenarioType: ScenarioType.UPPEROCCULSIONLATERALORIENTATION),
+  ScenarioModal(scenarioName: 'Lower Occlusion Plane Orientation(Lateral)', scenarioType: ScenarioType.UPPEROCCULSIONLATERALORIENTATION),
+  ScenarioModal(scenarioName: 'Labial Fullness(Naso-labial angle)', scenarioType: ScenarioType.LABIALFULLNESS),
+  ScenarioModal(scenarioName: 'Outline Teeth Position', scenarioType: ScenarioType.OUTLINETEETHPOSITION),
+  ScenarioModal(scenarioName: 'Vertical Relation', scenarioType: ScenarioType.VERTICALRELATION),
+  ScenarioModal(scenarioName: 'Face Profile', scenarioType: ScenarioType.FACEPROFILE),
   // ScenarioModal(scenarioName: 'Scenario Type 8', scenarioType: ScenarioType.SCENARIO8),
   // ScenarioModal(scenarioName: 'Scenario Type 9', scenarioType: ScenarioType.SCENARIO9),
 

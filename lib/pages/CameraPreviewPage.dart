@@ -47,7 +47,7 @@ class CameraPreviewPageState extends State<CameraPreviewPage>
   @override
   void initState() {
     // TODO: implement initState
-    switchCamera(forceFrontCamera: true);
+    switchCamera(forceFrontCamera: false);
     super.initState();
   }
 
