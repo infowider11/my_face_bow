@@ -46,7 +46,7 @@ class FaceDetectorPainter extends CustomPainter {
     final Paint paint = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.4
-      ..color = Colors.red;
+      ..color = MyColors.lightBlueColor;
     void _paintBackgroundImage(Canvas canvas) {
       if (image != null) {
         print('all the points are faceeeee');
@@ -101,6 +101,8 @@ class FaceDetectorPainter extends CustomPainter {
 
         FaceLandmark? leftEar = faceLandmarkMap[FaceLandmarkType.leftEar];
         FaceLandmark? rightEar = faceLandmarkMap[FaceLandmarkType.rightEar];
+        FaceLandmark? noseLandmark = faceLandmarkMap[FaceLandmarkType.noseBase];
+
 
         drawStraightLine({
           required double x1,
@@ -157,17 +159,24 @@ class FaceDetectorPainter extends CustomPainter {
           required double tangent,
           required double constant,
           required double increamentSize,
+          required bool opposite,
         }) {
           print(
               'all the points are drawSideFaceLineWithTangentAndConstant(${x1}, ${y1}) and (${tangent},and  ${constant})');
 
           double m = tangent;
-          double c = constant-4;
+          double c = constant-0;
 
-          double x = x1+12;
+          double x = x1+0;
+          if(opposite){
+            x = x1-0;
+          }
           double y = (m * x) + c;
 
           double x3 = x1 - increamentSize * 7;
+          if(opposite){
+            x3 = x1 + increamentSize * 7;
+          }
           double y3 = (m * x3) + c;
 
           print('drawing line on ($x,$y) and ($x3,$y3)');
@@ -180,7 +189,7 @@ class FaceDetectorPainter extends CustomPainter {
               translateX(x3, rotation, size, absoluteImageSize),
               translateY(y3, rotation, size, absoluteImageSize),
             ),
-            paint..color = MyColors.redColor,
+            paint..color = MyColors.lightBlueColor,
           );
         }
 
@@ -190,6 +199,7 @@ class FaceDetectorPainter extends CustomPainter {
           required double x2,
           required double y2,
           required double increamentSize,
+          required bool opposite,
           double constantDeviation = 0,
         }) {
           print('all the points are side (${x1}, ${y1}) and (${x2}, ${y2})');
@@ -200,17 +210,23 @@ class FaceDetectorPainter extends CustomPainter {
 
           print('The m is $m and c is $c and increment is $increamentSize');
 
-          if (x1 < x2) {
-            double x = x1 - increamentSize;
-            double y = (m * x) + c;
+
+            // double x = x1 - increamentSize;
+            // if(opposite){
+            //   x = x1 + increamentSize;
+            // }
+            double y = (m * x1) + c;
 
             double x3 = x2 - increamentSize * 5;
+            if(opposite){
+              x3 = x2 - increamentSize * 5;
+            }
             double y3 = (m * x3) + c;
-            print('all the points are drawing if (${x}, ${y}) and (${x3}, ${y3})');
+            print('all the points are drawing if (${x1}, ${y}) and (${x3}, ${y3})');
 
             canvas.drawLine(
               Offset(
-                translateX(x, rotation, size, absoluteImageSize),
+                translateX(x1, rotation, size, absoluteImageSize),
                 translateY(y, rotation, size, absoluteImageSize),
               ),
               Offset(
@@ -219,26 +235,33 @@ class FaceDetectorPainter extends CustomPainter {
               ),
               paint,
             );
-          } else {
-            double x = x1 - increamentSize/2;
-            double y = (m * x) + c;
 
-            double x3 = x2 - increamentSize * 4;
-            double y3 = (m * x3) + c;
-            print('all the points are drawing else (${x}, ${y}) and (${x3}, ${y3})');
-
-            canvas.drawLine(
-              Offset(
-                translateX(x, rotation, size, absoluteImageSize),
-                translateY(y, rotation, size, absoluteImageSize),
-              ),
-              Offset(
-                translateX(x3, rotation, size, absoluteImageSize),
-                translateY(y3, rotation, size, absoluteImageSize),
-              ),
-              paint..color = MyColors.lightBlueColor,
-            );
-          }
+          // else {
+          //   double x = x1 - increamentSize;
+          //   if(opposite){
+          //     x = x1 - increamentSize;
+          //   }
+          //   double y = (m * x) + c;
+          //
+          //   double x3 = x2 - increamentSize * 5;
+          //   if(opposite){
+          //     x3 = x2 - increamentSize * 5;
+          //   }
+          //   double y3 = (m * x3) + c;
+          //   print('all the points are drawings $opposite else (${x}, ${y}) and (${x3}, ${y3})');
+          //
+          //   canvas.drawLine(
+          //     Offset(
+          //       translateX(x, rotation, size, absoluteImageSize),
+          //       translateY(y, rotation, size, absoluteImageSize),
+          //     ),
+          //     Offset(
+          //       translateX(x3, rotation, size, absoluteImageSize),
+          //       translateY(y3, rotation, size, absoluteImageSize),
+          //     ),
+          //     paint..color = MyColors.lightBlueColor,
+          //   );
+          // }
         }
 
         print('about to draw scenario $selectedScenarios');
@@ -326,10 +349,9 @@ class FaceDetectorPainter extends CustomPainter {
           //     y2: upperRimLiney2,
           //     increamentSize: 40);
 
-          double nosex1 = nose!.points[nose!.points.length-1].x.toDouble();
-          double nosey1 = nose!.points[nose!.points.length-1].y.toDouble();
 
-          print('the nose points are (${nosex1}, ${nosey1})');
+
+
 //           var tangentAndConstant =
 //               CustomStraightLineLogics.getTangentAndConstantBetweenTwoPoints(
 //                   CustomPoint(x: upperRimLinex1, y: upperRimLiney1),
@@ -340,6 +362,23 @@ class FaceDetectorPainter extends CustomPainter {
           print('the ear points are (${leftEar!.position.x}, ${leftEar!.position.y})');
           double earx1 = double.parse('${leftEar!.position.x}');
           double eary1 = double.parse('${leftEar!.position.y}');
+          double nosex1 = nose!.points[nose!.points.length-1].x.toDouble();
+          double nosey1 = nose!.points[nose!.points.length-3].y.toDouble();
+          bool opposite = false;
+          if(opposite){
+
+          }
+
+
+
+          if((face.headEulerAngleY??20)<0){
+             earx1 = double.parse('${rightEar!.position.x}');
+             eary1 = double.parse('${rightEar!.position.y}');
+             nosex1 = nose!.points[0].x.toDouble();
+             nosey1 = nose!.points[2].y.toDouble();
+             opposite = true;
+          }
+          print('the nose points are (${nosex1}, ${nosey1}) and (${noseLandmark?.position.x}, ${noseLandmark?.position.y}) ${nose.points.length}');
 
           drawSideFaceLine(
               x2: nosex1,
@@ -347,6 +386,7 @@ class FaceDetectorPainter extends CustomPainter {
               x1: earx1,
               y1: eary1,
               constantDeviation: -0,
+              opposite: opposite,
               increamentSize: 0);
 
           double lipCenterx1 = lowerLipTop!.points[(lowerLipTop!.points.length/2).ceil()].x.toDouble();
@@ -365,6 +405,7 @@ class FaceDetectorPainter extends CustomPainter {
               y1: lipCentery1,
               constant: c,
               increamentSize: 27,
+              opposite: opposite,
               tangent: tangentAndConstant.tangent);
           if (face.headEulerAngleZ != null) {
             if (face.headEulerAngleZ! > 15 ||
