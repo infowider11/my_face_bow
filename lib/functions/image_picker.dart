@@ -13,7 +13,7 @@ Future<File?> pickImage(bool isGallery) async {
   File? image;
   String? _imageFile;
   try {
-    print('about to pick image');
+    debugPrint('about to pick image');
     XFile? pickedFile;
     if (isGallery) {
       pickedFile = await picker.pickImage(
@@ -31,9 +31,9 @@ Future<File?> pickImage(bool isGallery) async {
     }
     print('the error is $pickedFile');
     int length = await pickedFile!.length();
-    print('the length is');
+    debugPrint('the length is');
     // print('size : ${length}');
-    print('size: ${pickedFile.readAsBytes()}');
+    debugPrint('size: ${pickedFile.readAsBytes()}');
     File? croppedFile = await ImageCropper().cropImage(
       cropStyle: CropStyle.circle,
       // aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),

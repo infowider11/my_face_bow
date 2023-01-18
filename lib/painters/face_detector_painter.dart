@@ -20,7 +20,7 @@ class FaceDetectorPainter extends CustomPainter {
     this.faces,
     this.absoluteImageSize,
     this.rotation, {
-    this.image,
+    required this.image,
   });
 
   final List<Face> faces;
@@ -45,7 +45,7 @@ class FaceDetectorPainter extends CustomPainter {
     }
     final Paint paint = Paint()
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 1.4
+      ..strokeWidth = 1.9
       ..color = MyColors.lightBlueColor;
     void _paintBackgroundImage(Canvas canvas) {
       if (image != null) {
@@ -64,6 +64,9 @@ class FaceDetectorPainter extends CustomPainter {
     }
 
     _paintBackgroundImage(canvas);
+
+
+    CustomStraightLineLogics straightLineLogics = CustomStraightLineLogics(canvas: canvas, size: size, absoluteImageSize: absoluteImageSize, rotation: rotation, paint: paint, image: image);
     for (final Face face in faces) {
       try {
         void paintContour(FaceContourType type) {
@@ -104,165 +107,11 @@ class FaceDetectorPainter extends CustomPainter {
         FaceLandmark? noseLandmark = faceLandmarkMap[FaceLandmarkType.noseBase];
 
 
-        drawStraightLine({
-          required double x1,
-          required double y1,
-          required double x2,
-          required double y2,
-          required double increamentSize,
-        }) {
-          print('all the points are(${x1}, ${y1}) and (${x2}, ${y2})');
-
-          double m = (y2 - y1) / (x2 - x1);
-          double c = y1 - (m * x1);
-
-          if (x1 < x2) {
-            double x = x1 - increamentSize;
-            double y = (m * x) + c;
-
-            double x3 = x2 + increamentSize;
-            double y3 = (m * x3) + c;
-            canvas.drawLine(
-              Offset(
-                translateX(x, rotation, size, absoluteImageSize),
-                translateY(y, rotation, size, absoluteImageSize),
-              ),
-              Offset(
-                translateX(x3, rotation, size, absoluteImageSize),
-                translateY(y3, rotation, size, absoluteImageSize),
-              ),
-              paint,
-            );
-          } else {
-            double x = x1 + increamentSize;
-            double y = (m * x) + c;
-
-            double x3 = x2 - increamentSize;
-            double y3 = (m * x3) + c;
-            canvas.drawLine(
-              Offset(
-                translateX(x, rotation, size, absoluteImageSize),
-                translateY(y, rotation, size, absoluteImageSize),
-              ),
-              Offset(
-                translateX(x3, rotation, size, absoluteImageSize),
-                translateY(y3, rotation, size, absoluteImageSize),
-              ),
-              paint..color = MyColors.lightBlueColor,
-            );
-          }
-        }
-
-        drawSideFaceLineWithTangentAndConstant({
-          required double x1,
-          required double y1,
-          required double tangent,
-          required double constant,
-          required double increamentSize,
-          required bool opposite,
-        }) {
-          print(
-              'all the points are drawSideFaceLineWithTangentAndConstant(${x1}, ${y1}) and (${tangent},and  ${constant})');
-
-          double m = tangent;
-          double c = constant-0;
-
-          double x = x1+0;
-          if(opposite){
-            x = x1-0;
-          }
-          double y = (m * x) + c;
-
-          double x3 = x1 - increamentSize * 7;
-          if(opposite){
-            x3 = x1 + increamentSize * 7;
-          }
-          double y3 = (m * x3) + c;
-
-          print('drawing line on ($x,$y) and ($x3,$y3)');
-          canvas.drawLine(
-            Offset(
-              translateX(x, rotation, size, absoluteImageSize),
-              translateY(y, rotation, size, absoluteImageSize),
-            ),
-            Offset(
-              translateX(x3, rotation, size, absoluteImageSize),
-              translateY(y3, rotation, size, absoluteImageSize),
-            ),
-            paint..color = MyColors.lightBlueColor,
-          );
-        }
-
-        drawSideFaceLine({
-          required double x1,
-          required double y1,
-          required double x2,
-          required double y2,
-          required double increamentSize,
-          required bool opposite,
-          double constantDeviation = 0,
-        }) {
-          print('all the points are side (${x1}, ${y1}) and (${x2}, ${y2})');
-
-          double m = (y2 - y1) / (x2 - x1);
-          double c = y1 - (m * x1) + constantDeviation;
 
 
-          print('The m is $m and c is $c and increment is $increamentSize');
 
 
-            // double x = x1 - increamentSize;
-            // if(opposite){
-            //   x = x1 + increamentSize;
-            // }
-            double y = (m * x1) + c;
 
-            double x3 = x2 - increamentSize * 5;
-            if(opposite){
-              x3 = x2 - increamentSize * 5;
-            }
-            double y3 = (m * x3) + c;
-            print('all the points are drawing if (${x1}, ${y}) and (${x3}, ${y3})');
-
-            canvas.drawLine(
-              Offset(
-                translateX(x1, rotation, size, absoluteImageSize),
-                translateY(y, rotation, size, absoluteImageSize),
-              ),
-              Offset(
-                translateX(x3, rotation, size, absoluteImageSize),
-                translateY(y3, rotation, size, absoluteImageSize),
-              ),
-              paint,
-            );
-
-          // else {
-          //   double x = x1 - increamentSize;
-          //   if(opposite){
-          //     x = x1 - increamentSize;
-          //   }
-          //   double y = (m * x) + c;
-          //
-          //   double x3 = x2 - increamentSize * 5;
-          //   if(opposite){
-          //     x3 = x2 - increamentSize * 5;
-          //   }
-          //   double y3 = (m * x3) + c;
-          //   print('all the points are drawings $opposite else (${x}, ${y}) and (${x3}, ${y3})');
-          //
-          //   canvas.drawLine(
-          //     Offset(
-          //       translateX(x, rotation, size, absoluteImageSize),
-          //       translateY(y, rotation, size, absoluteImageSize),
-          //     ),
-          //     Offset(
-          //       translateX(x3, rotation, size, absoluteImageSize),
-          //       translateY(y3, rotation, size, absoluteImageSize),
-          //     ),
-          //     paint..color = MyColors.lightBlueColor,
-          //   );
-          // }
-        }
 
         print('about to draw scenario $selectedScenarios');
         if (selectedScenarios
@@ -279,7 +128,7 @@ class FaceDetectorPainter extends CustomPainter {
               .points[((rightEye!.points.length - 1) / 2).ceil()].y
               .toDouble();
 
-          drawStraightLine(
+          straightLineLogics.drawStraightLine(
               x1: interPupilaryLinex1,
               y1: interPupilaryLiney1,
               x2: interPupilaryLinex2,
@@ -296,24 +145,24 @@ class FaceDetectorPainter extends CustomPainter {
               .points[upperLipBottom!.points.length - 3].y
               .toDouble();
 
-          drawStraightLine(
+          straightLineLogics.drawStraightLine(
               x1: upperRimLinex1,
               y1: upperRimLiney1,
               x2: upperRimLinex2,
               y2: upperRimLiney2,
               increamentSize: 90);
-          if (face.headEulerAngleZ != null) {
-            if (face.headEulerAngleZ! > 15 ||
-                face.headEulerAngleZ! < (-15) ||
-                face.headEulerAngleX! > 15 ||
-                face.headEulerAngleX! < (-15) ||
-                face.headEulerAngleY! > 15 ||
-                face.headEulerAngleY! < (-15)) {
-              print(
-                  'zsssssss ${MyGlobalKeys.detectedImageViewStateKey.currentState}');
-              // MyGlobalKeys.homePageStateKey.currentState?.showErrorMessage();
-            }
-          }
+          // if (face.headEulerAngleZ != null) {
+          //   if (face.headEulerAngleZ! > 15 ||
+          //       face.headEulerAngleZ! < (-15) ||
+          //       face.headEulerAngleX! > 15 ||
+          //       face.headEulerAngleX! < (-15) ||
+          //       face.headEulerAngleY! > 15 ||
+          //       face.headEulerAngleY! < (-15)) {
+          //     print(
+          //         'zsssssss ${MyGlobalKeys.detectedImageViewStateKey.currentState}');
+          //     // MyGlobalKeys.homePageStateKey.currentState?.showErrorMessage();
+          //   }
+          // }
         }
 
         if (selectedScenarios
@@ -340,7 +189,6 @@ class FaceDetectorPainter extends CustomPainter {
               lowerLipTop!.points[lowerLipTop!.points.length - 2].x.toDouble();
           double upperRimLiney2 =
               lowerLipTop!.points[lowerLipTop!.points.length - 2].y.toDouble();
-          
           //
           // drawSideFaceLine(
           //     x1: upperRimLinex1,
@@ -348,29 +196,18 @@ class FaceDetectorPainter extends CustomPainter {
           //     x2: upperRimLinex2,
           //     y2: upperRimLiney2,
           //     increamentSize: 40);
-
-
-
-
 //           var tangentAndConstant =
 //               CustomStraightLineLogics.getTangentAndConstantBetweenTwoPoints(
 //                   CustomPoint(x: upperRimLinex1, y: upperRimLiney1),
 //                   CustomPoint(x: upperRimLinex2, y: upperRimLiney2));
 // // y = mx + c;
 //           double c = nosey1 - (nosex1 * tangentAndConstant.tangent);
-
           print('the ear points are (${leftEar!.position.x}, ${leftEar!.position.y})');
           double earx1 = double.parse('${leftEar!.position.x}');
           double eary1 = double.parse('${leftEar!.position.y}');
           double nosex1 = nose!.points[nose!.points.length-1].x.toDouble();
           double nosey1 = nose!.points[nose!.points.length-3].y.toDouble();
           bool opposite = false;
-          if(opposite){
-
-          }
-
-
-
           if((face.headEulerAngleY??20)<0){
              earx1 = double.parse('${rightEar!.position.x}');
              eary1 = double.parse('${rightEar!.position.y}');
@@ -379,8 +216,7 @@ class FaceDetectorPainter extends CustomPainter {
              opposite = true;
           }
           print('the nose points are (${nosex1}, ${nosey1}) and (${noseLandmark?.position.x}, ${noseLandmark?.position.y}) ${nose.points.length}');
-
-          drawSideFaceLine(
+          straightLineLogics.drawSideFaceLine(
               x2: nosex1,
               y2: nosey1,
               x1: earx1,
@@ -398,9 +234,9 @@ class FaceDetectorPainter extends CustomPainter {
                   CustomPoint(x: earx1, y: eary1));
 // y = mx + c;
           double c = lipCentery1 - (lipCenterx1 * tangentAndConstant.tangent);
-          
 
-          drawSideFaceLineWithTangentAndConstant(
+
+          straightLineLogics.drawSideFaceLineWithTangentAndConstant(
               x1: lipCenterx1,
               y1: lipCentery1,
               constant: c,
@@ -421,27 +257,27 @@ class FaceDetectorPainter extends CustomPainter {
           }
         }
 
+
+
+        if (selectedScenarios
+            .contains(ScenarioType.AMOUNTOFTEETHSHOWING)) {
+          print('about to draw scenario 3 AMOUNTOFTEETHSHOWING');
+
+          double lowerLipX =lowerLipTop!.points[(lowerLipBottom!.points.length/2).ceil()-1].x.toDouble();
+          double lowerLipY = lowerLipTop!.points[(lowerLipBottom!.points.length/2).ceil()-1].y.toDouble();
+          double upperLipX =
+          upperLipBottom!.points[(upperLipBottom!.points.length/2).ceil()-1].x.toDouble();
+          double upperLipY =
+          upperLipBottom!.points[(upperLipBottom!.points.length/2).ceil()-1].y.toDouble();
+          double distance = straightLineLogics.measureDistanceBetweenTwoPoints(p1: CustomPoint(x: lowerLipX, y: lowerLipY), p2: CustomPoint(x: upperLipX, y: upperLipY));
+          if(image!=null)
+          showSnackbar('the distance is $distance');
+          print('the distance is $distance');
+
+        }
+
         print(
             'the other para are euler angle x${face.headEulerAngleX} .... y ${face.headEulerAngleY}.... z ${face.headEulerAngleZ}');
-
-        // the other para are euler angle x5.755882263183594 .... y 4.462555408477783.... z 19.31239891052246
-
-        // FaceLandmark? leftEar = faceLandmarkMap[FaceLandmarkType.leftEar];
-        // FaceLandmark? rightEar = faceLandmarkMap[FaceLandmarkType.rightEar];
-        //
-        // print('the ear is ${leftEar}  ffff ${leftEar?.position.x} ');
-        // if(leftEar!=null && rightEar!=null){
-        //   double tempx1 = leftEar!.position.x + 0.0;
-        //   double tempy1 = leftEar!.position.y + 0.0;
-        //   double tempx2 = rightEar!.position.x + 0.0;
-        //   double tempy2 =rightEar!.position.y + 0.0;
-        //   getFirstPoint(
-        //       x1: tempx1,
-        //       y1: tempy1,
-        //       x2: tempx2,
-        //       y2: tempy2,
-        //       increamentSize: 50);
-        // }
       } catch (e) {
         print('the face could not be painted ${face}. Error:  $e');
       }

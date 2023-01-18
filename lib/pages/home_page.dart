@@ -116,40 +116,86 @@ class HomePageState extends State<HomePage> {
                   )
                 ],
               ),
-              vSizedBox4,
+              vSizedBox6,
               Expanded(
                 child: ListView.builder(
                   itemCount: allScenarios.length,
+
                   itemBuilder: (context, index) {
                     return Consumer<GlobalProvider>(
                         builder: (context, globalData, child) {
-                      return GestureDetector(
-                        onTap: () async {
-                          // if (selectedScenarios.contains(allScenarios[index])) {
-                          //   selectedScenarios.remove(allScenarios[index]);
-                          // } else {
-                          //   selectedScenarios.add(allScenarios[index]);
-                          // }
-                          globalData.updateScenario([allScenarios[index]]);
-                          // selectedScenarios = [];
-                          // selectedScenarios.add(allScenarios[index]);
-                          setState(() {});
-                        },
+
+                      return Container(
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            vSizedBox2,
-                            Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 4, vertical: 4),
-                              color: globalData.selectedScenarios
-                                      .contains(allScenarios[index])
-                                  ? MyColors.redColor
-                                  : null,
-                              child: SubHeadingText(
-                                allScenarios[index].scenarioName,
-                                color: Colors.white,
+
+                            GestureDetector(
+                              onTap: () async {
+                                // if (selectedScenarios.contains(allScenarios[index])) {
+                                //   selectedScenarios.remove(allScenarios[index]);
+                                // } else {
+                                //   selectedScenarios.add(allScenarios[index]);
+                                // }
+                                if(allScenarios[index].children.isEmpty)
+                                globalData.updateScenario([allScenarios[index]]);
+                                // selectedScenarios = [];
+                                // selectedScenarios.add(allScenarios[index]);
+                                setState(() {});
+                              },
+                              child: Column(
+                                children: [
+                                  vSizedBox2,
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 4, vertical: 4),
+                                    color: globalData.selectedScenarios
+                                            .contains(allScenarios[index])
+                                        ? MyColors.redColor
+                                        : null,
+                                    child: SubHeadingText(
+                                      allScenarios[index].scenarioName,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
+                            for(int i = 0;i<allScenarios[index].children.length;i++)
+                              Padding(
+                                padding: EdgeInsets.only(left: 32, top: 0),
+                                child: GestureDetector(
+                                  onTap: () async {
+                                    // if (selectedScenarios.contains(allScenarios[index])) {
+                                    //   selectedScenarios.remove(allScenarios[index]);
+                                    // } else {
+                                    //   selectedScenarios.add(allScenarios[index]);
+                                    // }
+                                    globalData.updateScenario([allScenarios[index].children[i]]);
+                                    // selectedScenarios = [];
+                                    // selectedScenarios.add(allScenarios[index]);
+                                    setState(() {});
+                                  },
+                                  child: Column(
+                                    children: [
+                                      vSizedBox2,
+                                      Container(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 4, vertical: 4),
+                                        color: globalData.selectedScenarios
+                                            .contains(allScenarios[index].children[i])
+                                            ? MyColors.redColor
+                                            : null,
+                                        child: SubHeadingText(
+                                          allScenarios[index].children[i].scenarioName,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              )
                           ],
                         ),
                       );
