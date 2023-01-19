@@ -19,7 +19,7 @@ class MyColors{
   static const Color whiteColor = Colors.white;
   static Color greenColor = Colors.green;
   static Color active = const Color(0xFE1CDBC1);
-  static Color redColor = const Color(0xffd43706);
+  static const Color redColor = Color(0xffd43706);
   static Color whitelight = const Color(0xFFF7F7F7);
   static Color greyish = const Color(0xFFCACACA);
 

@@ -15,6 +15,7 @@ import '../constants/global_data.dart';
 import 'dart:ui' as ui;
 
 import '../modals/scenario_types.dart';
+import '../widgets/round_edged_button.dart';
 
 class DetectedImageView extends StatefulWidget {
   // final CustomPaint customPaint;
@@ -48,95 +49,196 @@ class DetectedImageViewState extends State<DetectedImageView> {
                 vSizedBox2,
                 Consumer<PaintProvider>(
                     builder: (context, paintProvider, child) {
-                    return Padding(
-                      padding: const EdgeInsets.only(left: 16, top: 20),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          IconButton(
-                            icon: Icon(
-                              Icons.arrow_back_rounded,
-                              color: Colors.white,
-                            ),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
+                  return Padding(
+                    padding: const EdgeInsets.only(left: 16, top: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        IconButton(
+                          icon: Icon(
+                            Icons.arrow_back_rounded,
+                            color: Colors.white,
                           ),
-                          IconButton(
-                            icon: Icon(
-                              Icons.arrow_downward_rounded,
-                              color: Colors.white,
-                            ),
-                            onPressed: () async{
-                              print('hhhhhh....1');
-                              ui.PictureRecorder recorder = ui.PictureRecorder();
-                              print('hhhhhh....2');
-                              Canvas canvas = Canvas(recorder);
-                              print('hhhhhh....3');
-                              var painter = paintProvider.customPainter;
-                              print('hhhhhh....4');
-                              // height: globalAspectRatio*(MediaQuery.of(context).size.width),
-                              // width:MediaQuery.of(context).size.width,
-                              var size = Size(MediaQuery.of(context).size.width, globalAspectRatio*(MediaQuery.of(context).size.width));
-                              print('hhhhhh....5');
-                              painter!.paint(canvas, size);
-                              print('hhhhhh....6');
-                              ui.Image renderedImage = await recorder
-                                  .endRecording()
-                                  .toImage(size.width.floor(), size.height.floor());
-                              print('hhhhhh....7');
-                              var pngBytes =
-                                  await renderedImage.toByteData(format: ui.ImageByteFormat.png);
-                              print('hhhhhh....8');
-
-                              Directory saveDir = await getApplicationDocumentsDirectory();
-                              print('hhhhhh....9');
-                              String path = '${saveDir.path}/custom_image.jpg';
-                              print('hhhhhh....10');
-                              File saveFile = File(path);
-                              print('hhhhhh....11');
-
-                              if (!saveFile.existsSync()) {
-                                print('hhhhhh....12');
-                                saveFile.createSync(recursive: true);
-                              }
-                              print('hhhhhh....13');
-                              saveFile.writeAsBytesSync(pngBytes!.buffer.asUint8List(), flush: true);
-                              print('hhhhhh....14');
-                              try{
-                                print('hhhhhh....15');
-                                await GallerySaver.saveImage(path, albumName: 'MyFaceBow');
-                                print('hhhhhh....16 The file is saved at ${saveFile.path} also in gallary');
-                                showSnackbar('The file is saved in your gallery');
-                              }catch(e){
-                                print('hhhhhh....15 The file is saved at ${saveFile.path}');
-                                showSnackbar('The file could not be saved($e)');
-                                print('thjhh error is $e');
-                              }
-                            },
-                          ),
-                        ],
-                      ),
-                    );
-                  }
-                ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                        // IconButton(
+                        //   icon: Icon(
+                        //     Icons.arrow_downward_rounded,
+                        //     color: Colors.white,
+                        //   ),
+                        //   onPressed: () async {
+                        //     print('hhhhhh....1');
+                        //     ui.PictureRecorder recorder = ui.PictureRecorder();
+                        //     print('hhhhhh....2');
+                        //     Canvas canvas = Canvas(recorder);
+                        //     print('hhhhhh....3');
+                        //     var painter = paintProvider.customPainter;
+                        //     print('hhhhhh....4');
+                        //     // height: globalAspectRatio*(MediaQuery.of(context).size.width),
+                        //     // width:MediaQuery.of(context).size.width,
+                        //     var size = Size(
+                        //         MediaQuery.of(context).size.width,
+                        //         globalAspectRatio *
+                        //             (MediaQuery.of(context).size.width));
+                        //     print('hhhhhh....5');
+                        //     painter!.paint(canvas, size);
+                        //     print('hhhhhh....6');
+                        //     ui.Image renderedImage = await recorder
+                        //         .endRecording()
+                        //         .toImage(
+                        //             size.width.floor(), size.height.floor());
+                        //     print('hhhhhh....7');
+                        //     var pngBytes = await renderedImage.toByteData(
+                        //         format: ui.ImageByteFormat.png);
+                        //     print('hhhhhh....8');
+                        //
+                        //     Directory saveDir =
+                        //         await getApplicationDocumentsDirectory();
+                        //     print('hhhhhh....9');
+                        //     String path = '${saveDir.path}/custom_image.jpg';
+                        //     print('hhhhhh....10');
+                        //     File saveFile = File(path);
+                        //     print('hhhhhh....11');
+                        //
+                        //     if (!saveFile.existsSync()) {
+                        //       print('hhhhhh....12');
+                        //       saveFile.createSync(recursive: true);
+                        //     }
+                        //     print('hhhhhh....13');
+                        //     saveFile.writeAsBytesSync(
+                        //         pngBytes!.buffer.asUint8List(),
+                        //         flush: true);
+                        //     print('hhhhhh....14');
+                        //     try {
+                        //       print('hhhhhh....15');
+                        //       await GallerySaver.saveImage(path,
+                        //           albumName: 'MyFaceBow');
+                        //       print(
+                        //           'hhhhhh....16 The file is saved at ${saveFile.path} also in gallary');
+                        //       showSnackbar('The file is saved in your gallery');
+                        //     } catch (e) {
+                        //       print(
+                        //           'hhhhhh....15 The file is saved at ${saveFile.path}');
+                        //       showSnackbar('The file could not be saved($e)');
+                        //       print('thjhh error is $e');
+                        //     }
+                        //   },
+                        // ),
+                      ],
+                    ),
+                  );
+                }),
                 vSizedBox,
                 Center(
                   child: Consumer<PaintProvider>(
-                    builder: (context, paintProvider, child) {
-                      return Container(
-                        // color: Colors.green.withOpacity(0.2),
-                        height: globalAspectRatio*(MediaQuery.of(context).size.width),
-                        width:MediaQuery.of(context).size.width,
-                        // height: MediaQuery.of(context).size.height - 500,
-                        // width: MediaQuery.of(context).size.height -
-                        //     400 / globalAspectRatio,
+                      builder: (context, paintProvider, child) {
+                    return Container(
+                      // color: Colors.green.withOpacity(0.2),
+                      height: globalAspectRatio *
+                          (MediaQuery.of(context).size.width),
+                      width: MediaQuery.of(context).size.width,
+                      // height: MediaQuery.of(context).size.height - 500,
+                      // width: MediaQuery.of(context).size.height -
+                      //     400 / globalAspectRatio,
 
-                        child: paintProvider.customPaint,
+                      child: paintProvider.customPaint,
+                    );
+                  }),
+                ),
+                Consumer<GlobalProvider>(builder: (context, globalData, child) {
+                  if (globalData.selectedScenarios.isNotEmpty) if (globalData
+                          .selectedScenarios[0].scenarioType ==
+                      ScenarioType.AMOUNTOFTEETHSHOWING)
+                    return ValueListenableBuilder(
+                        valueListenable: amountOfTeethShowing,
+                        builder: (context, value, child) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 16),
+                            child: Center(
+                              child: SubHeadingText(
+                                  value.roundToDouble()>1?value.roundToDouble()>2?
+                                  'Please adjust your rim. It can not be more than 2mm':
+                                'The Amount of teeth showing is ${value.roundToDouble()}mm':
+                                  'Please adjust your rim. It can not be less than 1mm',
+                                color:  value.roundToDouble()>1?value.roundToDouble()>2?Colors.red:Colors.black:Colors.red,
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          );
+                        });
+                  return Container();
+                }),
+                Center(
+                  child: Consumer<PaintProvider>(
+                    builder: (context, paintProvider, child) {
+                      return RoundEdgedButton(
+                        text: 'Save image to gallery',
+                        horizontalMargin: 16,
+                        width: 260,
+                        onTap: ()async{
+                          print('hhhhhh....1');
+                          ui.PictureRecorder recorder = ui.PictureRecorder();
+                          print('hhhhhh....2');
+                          Canvas canvas = Canvas(recorder);
+                          print('hhhhhh....3');
+                          var painter = paintProvider.customPainter;
+                          print('hhhhhh....4');
+                          // height: globalAspectRatio*(MediaQuery.of(context).size.width),
+                          // width:MediaQuery.of(context).size.width,
+                          var size = Size(
+                              MediaQuery.of(context).size.width,
+                              globalAspectRatio *
+                                  (MediaQuery.of(context).size.width));
+                          print('hhhhhh....5');
+                          painter!.paint(canvas, size);
+                          print('hhhhhh....6');
+                          ui.Image renderedImage = await recorder
+                              .endRecording()
+                              .toImage(
+                              size.width.floor(), size.height.floor());
+                          print('hhhhhh....7');
+                          var pngBytes = await renderedImage.toByteData(
+                              format: ui.ImageByteFormat.png);
+                          print('hhhhhh....8');
+
+                          Directory saveDir =
+                              await getApplicationDocumentsDirectory();
+                          print('hhhhhh....9');
+                          String path = '${saveDir.path}/custom_image.jpg';
+                          print('hhhhhh....10');
+                          File saveFile = File(path);
+                          print('hhhhhh....11');
+
+                          if (!saveFile.existsSync()) {
+                            print('hhhhhh....12');
+                            saveFile.createSync(recursive: true);
+                          }
+                          print('hhhhhh....13');
+                          saveFile.writeAsBytesSync(
+                              pngBytes!.buffer.asUint8List(),
+                              flush: true);
+                          print('hhhhhh....14');
+                          try {
+                            print('hhhhhh....15');
+                            await GallerySaver.saveImage(path,
+                                albumName: 'MyFaceBow');
+                            print(
+                                'hhhhhh....16 The file is saved at ${saveFile.path} also in gallary');
+                            showSnackbar('The file is saved in your gallery');
+                          } catch (e) {
+                            print(
+                                'hhhhhh....15 The file is saved at ${saveFile.path}');
+                            showSnackbar('The file could not be saved($e)');
+                            print('thjhh error is $e');
+                          }
+                        },
                       );
                     }
                   ),
-                ),
+                )
                 // Stack(
                 //   // fit: StackFit.expand,
                 //   children: <Widget>[
@@ -163,22 +265,6 @@ class DetectedImageViewState extends State<DetectedImageView> {
                 //   ],
                 // ),
               ],
-            ),
-            Consumer<GlobalProvider>(
-                builder: (context, globalData, child) {
-                  if(globalData.selectedScenarios.isNotEmpty)
-                    if(globalData.selectedScenarios[0].scenarioType==ScenarioType.AMOUNTOFTEETHSHOWING)
-                      return ValueListenableBuilder(
-                          valueListenable: amountOfTeethShowing,
-                          builder: (context, value, child) {
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 120),
-                              child: SubHeadingText('the distance is ${value.roundToDouble()}'),
-                            );
-                          }
-                      );
-                  return Container();
-                }
             ),
           ],
         ),
