@@ -158,11 +158,11 @@ class DetectedImageViewState extends State<DetectedImageView> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 16, vertical: 16),
                             child: Center(
-                              child: SubHeadingText(
-                                  value.roundToDouble()>1?value.roundToDouble()>2?
+                              child: SubHeadingText('${value.roundToDouble()}mm\n'+
+                                  (value.roundToDouble()>1?value.roundToDouble()>2?
                                   'Please adjust your rim. It can not be more than 2mm':
-                                'The Amount of teeth showing is ${value.roundToDouble()}mm':
-                                  'Please adjust your rim. It can not be less than 1mm',
+                                '':
+                                  'Please adjust your rim. It can not be less than 1mm'),
                                 color:  value.roundToDouble()>1?value.roundToDouble()>2?Colors.red:Colors.black:Colors.red,
                                 textAlign: TextAlign.center,
                               ),
