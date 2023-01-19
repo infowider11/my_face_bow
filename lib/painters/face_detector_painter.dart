@@ -270,10 +270,12 @@ class FaceDetectorPainter extends CustomPainter {
           double upperLipY =
           upperLipBottom!.points[(upperLipBottom!.points.length/2).ceil()-1].y.toDouble();
           double distance = straightLineLogics.measureDistanceBetweenTwoPoints(p1: CustomPoint(x: lowerLipX, y: lowerLipY), p2: CustomPoint(x: upperLipX, y: upperLipY));
-          if(image!=null)
-          showSnackbar('the distance is $distance');
+          amountOfTeethShowing.value = distance;
           print('the distance is $distance');
-
+          if(image!=null) {
+            // showSnackbar('the distance is $distance');
+            // print('the distance is $distance');
+          }
         }
 
         print(
@@ -282,6 +284,8 @@ class FaceDetectorPainter extends CustomPainter {
         print('the face could not be painted ${face}. Error:  $e');
       }
     }
+
+
   }
 
   @override

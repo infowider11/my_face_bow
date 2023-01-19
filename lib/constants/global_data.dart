@@ -20,6 +20,8 @@ List<CameraDescription> cameras = [];
 double globalHeight = Platform.isAndroid?720:640;
 double globalWidth =  Platform.isAndroid?480:480;
 
+
+ValueNotifier<double> amountOfTeethShowing = ValueNotifier(0);
 // double m = globalHeight/globalWidth;
 double globalAspectRatio = globalHeight/globalWidth;
 

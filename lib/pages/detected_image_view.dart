@@ -1,14 +1,20 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:gallery_saver/gallery_saver.dart';
 import 'package:my_face_bow/constants/colors.dart';
 import 'package:my_face_bow/constants/sized_box.dart';
 import 'package:my_face_bow/providers/PaintProvider.dart';
 import 'package:my_face_bow/providers/global_provider.dart';
 import 'package:my_face_bow/widgets/CustomTexts.dart';
+import 'package:my_face_bow/widgets/showSnackbar.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/global_data.dart';
+import 'dart:ui' as ui;
+
+import '../modals/scenario_types.dart';
 
 class DetectedImageView extends StatefulWidget {
   // final CustomPaint customPaint;
@@ -40,17 +46,79 @@ class DetectedImageViewState extends State<DetectedImageView> {
               // mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 vSizedBox2,
-                Padding(
-                  padding: const EdgeInsets.only(left: 16, top: 20),
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.arrow_back_rounded,
-                      color: Colors.white,
-                    ),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  ),
+                Consumer<PaintProvider>(
+                    builder: (context, paintProvider, child) {
+                    return Padding(
+                      padding: const EdgeInsets.only(left: 16, top: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          IconButton(
+                            icon: Icon(
+                              Icons.arrow_back_rounded,
+                              color: Colors.white,
+                            ),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              Icons.arrow_downward_rounded,
+                              color: Colors.white,
+                            ),
+                            onPressed: () async{
+                              print('hhhhhh....1');
+                              ui.PictureRecorder recorder = ui.PictureRecorder();
+                              print('hhhhhh....2');
+                              Canvas canvas = Canvas(recorder);
+                              print('hhhhhh....3');
+                              var painter = paintProvider.customPainter;
+                              print('hhhhhh....4');
+                              // height: globalAspectRatio*(MediaQuery.of(context).size.width),
+                              // width:MediaQuery.of(context).size.width,
+                              var size = Size(MediaQuery.of(context).size.width, globalAspectRatio*(MediaQuery.of(context).size.width));
+                              print('hhhhhh....5');
+                              painter!.paint(canvas, size);
+                              print('hhhhhh....6');
+                              ui.Image renderedImage = await recorder
+                                  .endRecording()
+                                  .toImage(size.width.floor(), size.height.floor());
+                              print('hhhhhh....7');
+                              var pngBytes =
+                                  await renderedImage.toByteData(format: ui.ImageByteFormat.png);
+                              print('hhhhhh....8');
+
+                              Directory saveDir = await getApplicationDocumentsDirectory();
+                              print('hhhhhh....9');
+                              String path = '${saveDir.path}/custom_image.jpg';
+                              print('hhhhhh....10');
+                              File saveFile = File(path);
+                              print('hhhhhh....11');
+
+                              if (!saveFile.existsSync()) {
+                                print('hhhhhh....12');
+                                saveFile.createSync(recursive: true);
+                              }
+                              print('hhhhhh....13');
+                              saveFile.writeAsBytesSync(pngBytes!.buffer.asUint8List(), flush: true);
+                              print('hhhhhh....14');
+                              try{
+                                print('hhhhhh....15');
+                                await GallerySaver.saveImage(path, albumName: 'MyFaceBow');
+                                print('hhhhhh....16 The file is saved at ${saveFile.path} also in gallary');
+                                showSnackbar('The file is saved in your gallery');
+                              }catch(e){
+                                print('hhhhhh....15 The file is saved at ${saveFile.path}');
+                                showSnackbar('The file could not be saved($e)');
+                                print('thjhh error is $e');
+                              }
+                            },
+                          ),
+                        ],
+                      ),
+                    );
+                  }
                 ),
                 vSizedBox,
                 Center(
@@ -95,6 +163,22 @@ class DetectedImageViewState extends State<DetectedImageView> {
                 //   ],
                 // ),
               ],
+            ),
+            Consumer<GlobalProvider>(
+                builder: (context, globalData, child) {
+                  if(globalData.selectedScenarios.isNotEmpty)
+                    if(globalData.selectedScenarios[0].scenarioType==ScenarioType.AMOUNTOFTEETHSHOWING)
+                      return ValueListenableBuilder(
+                          valueListenable: amountOfTeethShowing,
+                          builder: (context, value, child) {
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 120),
+                              child: SubHeadingText('the distance is ${value.roundToDouble()}'),
+                            );
+                          }
+                      );
+                  return Container();
+                }
             ),
           ],
         ),

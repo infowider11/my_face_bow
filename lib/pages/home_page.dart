@@ -257,6 +257,8 @@ class HomePageState extends State<HomePage> {
                           ),
 
                         ),
+
+                        vSizedBox
                         // if (_customPaint != null) _customPaint!,
                       ],
                     ),
@@ -304,7 +306,7 @@ class HomePageState extends State<HomePage> {
                             });
                             await Provider.of<GlobalProvider>(context, listen: false).controller!.stopImageStream();
                             try{
-                              await Provider.of<PaintProvider>(context, listen: false).updateCustomPainter(null);
+                              await Provider.of<PaintProvider>(context, listen: false).updateCustomPainter(null, null);
                               file = await MyGlobalKeys
                                   .cameraPreviewPageStateKey.currentState
                                   ?.takePictureInFileFormat();
@@ -485,7 +487,7 @@ class HomePageState extends State<HomePage> {
     print('the faces are home page ${faces}');
 
     if (faces.length == 0) {
-      Provider.of<PaintProvider>(context, listen: false).updateCustomPainter(CustomPaint(painter: null));
+      Provider.of<PaintProvider>(context, listen: false).updateCustomPainter(CustomPaint(painter: null),null);
       _isBusy = false;
       return false;
     }
@@ -512,7 +514,7 @@ if(!fromCamera){
 
       print('hello____${DateTime.now().millisecondsSinceEpoch}');
 
-      Provider.of<PaintProvider>(context, listen: false).updateCustomPainter(CustomPaint(painter: painter));
+      Provider.of<PaintProvider>(context, listen: false).updateCustomPainter(CustomPaint(painter: painter), painter);
       print('hello____${DateTime.now().millisecondsSinceEpoch}');
       // _customPaint = CustomPaint(painter: painter);
     } else {
@@ -525,7 +527,7 @@ if(!fromCamera){
         InputImageRotation.rotation0deg,
         image: imageFormatFile,
       );
-      Provider.of<PaintProvider>(context, listen: false).updateCustomPainter(CustomPaint(painter: painter));
+      Provider.of<PaintProvider>(context, listen: false).updateCustomPainter(CustomPaint(painter: painter), painter);
       // _customPaint = CustomPaint(painter: painter);
       // for (final face in faces) {
       //   text += 'face: ${face.boundingBox}\n\n';
