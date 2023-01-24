@@ -278,7 +278,7 @@ class FaceDetectorPainter extends CustomPainter {
           double distance = straightLineLogics.measureDistanceBetweenTwoPoints(
             p1: CustomPoint(x: lowerLipX, y: lowerLipY),
             p2: CustomPoint(x: upperLipX, y: upperLipY),
-            extendSizeRight: -0.25,
+            extendSizeRight: -0.38,
             extendSizeLeft: -0.25,
           );
           amountOfTeethShowing.value = distance;
