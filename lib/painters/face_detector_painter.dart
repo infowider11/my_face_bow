@@ -269,7 +269,7 @@ class FaceDetectorPainter extends CustomPainter {
           upperLipBottom!.points[(upperLipBottom!.points.length/2).ceil()-1].x.toDouble();
           double upperLipY =
           upperLipBottom!.points[(upperLipBottom!.points.length/2).ceil()-1].y.toDouble();
-          double distance = straightLineLogics.measureDistanceBetweenTwoPoints(p1: CustomPoint(x: lowerLipX, y: lowerLipY), p2: CustomPoint(x: upperLipX, y: upperLipY));
+          double distance = straightLineLogics.measureDistanceBetweenTwoPoints(p1: CustomPoint(x: lowerLipX, y: lowerLipY), p2: CustomPoint(x: upperLipX, y: upperLipY),extendSizeRight: -0.3, extendSizeLeft: -0.3 );
           amountOfTeethShowing.value = distance;
           print('the distance is $distance');
           if(image!=null) {

@@ -62,14 +62,38 @@ class CustomStraightLineLogics {
     double extendSizeLeft = 0,
     double extendSizeRight = 0,
   }) {
+
+    double x1 = p1.x;
+    double y1 = p1.y;
+    double x2 = p2.x;
+    double y2 = p2.y;
+    if(extendSizeLeft!=0){
+      // y = mx+c
+      var a = getTangentAndConstantBetweenTwoPoints(p1,p2);
+      double m = a.tangent;
+      double c = a.constant;
+
+      x1 = p1.x+extendSizeLeft;
+      y1 = (m*x1) + c;
+    }
+    if(extendSizeRight!=0){
+      // y = mx+c
+      var a = getTangentAndConstantBetweenTwoPoints(p1,p2);
+      double m = a.tangent;
+      double c = a.constant;
+
+      x2 = p2.x+extendSizeRight;
+      y2 = (m*x2) + c;
+    }
+
     canvas.drawLine(
       Offset(
-        translateX(p1.x, rotation, size, absoluteImageSize),
-        translateY(p1.y, rotation, size, absoluteImageSize),
+        translateX(x1, rotation, size, absoluteImageSize),
+        translateY(y1, rotation, size, absoluteImageSize),
       ),
       Offset(
-        translateX(p2.x, rotation, size, absoluteImageSize),
-        translateY(p2.y, rotation, size, absoluteImageSize),
+        translateX(x2, rotation, size, absoluteImageSize),
+        translateY(y2, rotation, size, absoluteImageSize),
       ),
       paint,
     );
@@ -218,7 +242,7 @@ class CustomStraightLineLogics {
     double extendSizeLeft = 0,
     double extendSizeRight = 0,
   }) {
-    drawLineBetweenTwoPoints(p1: p1, p2: p2);
+    drawLineBetweenTwoPoints(p1: p1, p2: p2, extendSizeRight: extendSizeRight, extendSizeLeft: extendSizeLeft);
 
     return math.sqrt(((p1.y-p2.y)*(p1.y-p2.y))+((p1.x-p2.x)*(p1.x-p2.x)))*0.2645833333;
 
