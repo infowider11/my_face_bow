@@ -65,8 +65,13 @@ class FaceDetectorPainter extends CustomPainter {
 
     _paintBackgroundImage(canvas);
 
-
-    CustomStraightLineLogics straightLineLogics = CustomStraightLineLogics(canvas: canvas, size: size, absoluteImageSize: absoluteImageSize, rotation: rotation, paint: paint, image: image);
+    CustomStraightLineLogics straightLineLogics = CustomStraightLineLogics(
+        canvas: canvas,
+        size: size,
+        absoluteImageSize: absoluteImageSize,
+        rotation: rotation,
+        paint: paint,
+        image: image);
     for (final Face face in faces) {
       try {
         void paintContour(FaceContourType type) {
@@ -105,13 +110,6 @@ class FaceDetectorPainter extends CustomPainter {
         FaceLandmark? leftEar = faceLandmarkMap[FaceLandmarkType.leftEar];
         FaceLandmark? rightEar = faceLandmarkMap[FaceLandmarkType.rightEar];
         FaceLandmark? noseLandmark = faceLandmarkMap[FaceLandmarkType.noseBase];
-
-
-
-
-
-
-
 
         print('about to draw scenario $selectedScenarios');
         if (selectedScenarios
@@ -202,20 +200,22 @@ class FaceDetectorPainter extends CustomPainter {
 //                   CustomPoint(x: upperRimLinex2, y: upperRimLiney2));
 // // y = mx + c;
 //           double c = nosey1 - (nosex1 * tangentAndConstant.tangent);
-          print('the ear points are (${leftEar!.position.x}, ${leftEar!.position.y})');
+          print(
+              'the ear points are (${leftEar!.position.x}, ${leftEar!.position.y})');
           double earx1 = double.parse('${leftEar!.position.x}');
           double eary1 = double.parse('${leftEar!.position.y}');
-          double nosex1 = nose!.points[nose!.points.length-1].x.toDouble();
-          double nosey1 = nose!.points[nose!.points.length-3].y.toDouble();
+          double nosex1 = nose!.points[nose!.points.length - 1].x.toDouble();
+          double nosey1 = nose!.points[nose!.points.length - 3].y.toDouble();
           bool opposite = false;
-          if((face.headEulerAngleY??20)<0){
-             earx1 = double.parse('${rightEar!.position.x}');
-             eary1 = double.parse('${rightEar!.position.y}');
-             nosex1 = nose!.points[0].x.toDouble();
-             nosey1 = nose!.points[2].y.toDouble();
-             opposite = true;
+          if ((face.headEulerAngleY ?? 20) < 0) {
+            earx1 = double.parse('${rightEar!.position.x}');
+            eary1 = double.parse('${rightEar!.position.y}');
+            nosex1 = nose!.points[0].x.toDouble();
+            nosey1 = nose!.points[2].y.toDouble();
+            opposite = true;
           }
-          print('the nose points are (${nosex1}, ${nosey1}) and (${noseLandmark?.position.x}, ${noseLandmark?.position.y}) ${nose.points.length}');
+          print(
+              'the nose points are (${nosex1}, ${nosey1}) and (${noseLandmark?.position.x}, ${noseLandmark?.position.y}) ${nose.points.length}');
           straightLineLogics.drawSideFaceLine(
               x2: nosex1,
               y2: nosey1,
@@ -225,16 +225,19 @@ class FaceDetectorPainter extends CustomPainter {
               opposite: opposite,
               increamentSize: 0);
 
-          double lipCenterx1 = lowerLipTop!.points[(lowerLipTop!.points.length/2).ceil()].x.toDouble();
-          double lipCentery1 = lowerLipTop!.points[(lowerLipTop!.points.length/2).ceil()].y.toDouble();
+          double lipCenterx1 = lowerLipTop!
+              .points[(lowerLipTop!.points.length / 2).ceil()].x
+              .toDouble();
+          double lipCentery1 = lowerLipTop!
+              .points[(lowerLipTop!.points.length / 2).ceil()].y
+              .toDouble();
 
-                    var tangentAndConstant =
+          var tangentAndConstant =
               CustomStraightLineLogics.getTangentAndConstantBetweenTwoPoints(
                   CustomPoint(x: nosex1, y: nosey1),
                   CustomPoint(x: earx1, y: eary1));
 // y = mx + c;
           double c = lipCentery1 - (lipCenterx1 * tangentAndConstant.tangent);
-
 
           straightLineLogics.drawSideFaceLineWithTangentAndConstant(
               x1: lipCenterx1,
@@ -257,22 +260,30 @@ class FaceDetectorPainter extends CustomPainter {
           }
         }
 
-
-
-        if (selectedScenarios
-            .contains(ScenarioType.AMOUNTOFTEETHSHOWING)) {
+        if (selectedScenarios.contains(ScenarioType.AMOUNTOFTEETHSHOWING)) {
           print('about to draw scenario 3 AMOUNTOFTEETHSHOWING');
 
-          double lowerLipX =lowerLipTop!.points[(lowerLipBottom!.points.length/2).ceil()-1].x.toDouble();
-          double lowerLipY = lowerLipTop!.points[(lowerLipBottom!.points.length/2).ceil()-1].y.toDouble();
-          double upperLipX =
-          upperLipBottom!.points[(upperLipBottom!.points.length/2).ceil()-1].x.toDouble();
-          double upperLipY =
-          upperLipBottom!.points[(upperLipBottom!.points.length/2).ceil()-1].y.toDouble();
-          double distance = straightLineLogics.measureDistanceBetweenTwoPoints(p1: CustomPoint(x: lowerLipX, y: lowerLipY), p2: CustomPoint(x: upperLipX, y: upperLipY),extendSizeRight: -0.5, extendSizeLeft: -0.25 );
+          double lowerLipX = lowerLipTop!
+              .points[(lowerLipBottom!.points.length / 2).ceil() - 1].x
+              .toDouble();
+          double lowerLipY = lowerLipTop!
+              .points[(lowerLipBottom!.points.length / 2).ceil() - 1].y
+              .toDouble();
+          double upperLipX = upperLipBottom!
+              .points[(upperLipBottom!.points.length / 2).ceil() - 1].x
+              .toDouble();
+          double upperLipY = upperLipBottom!
+              .points[(upperLipBottom!.points.length / 2).ceil() - 1].y
+              .toDouble();
+          double distance = straightLineLogics.measureDistanceBetweenTwoPoints(
+            p1: CustomPoint(x: lowerLipX, y: lowerLipY),
+            p2: CustomPoint(x: upperLipX, y: upperLipY),
+            extendSizeRight: -0.25,
+            extendSizeLeft: -0.25,
+          );
           amountOfTeethShowing.value = distance;
           print('the distance is $distance');
-          if(image!=null) {
+          if (image != null) {
             // showSnackbar('the distance is $distance');
             // print('the distance is $distance');
           }
@@ -284,8 +295,6 @@ class FaceDetectorPainter extends CustomPainter {
         print('the face could not be painted ${face}. Error:  $e');
       }
     }
-
-
   }
 
   @override
