@@ -98,6 +98,7 @@ class FaceDetectorPainter extends CustomPainter {
         Map<FaceLandmarkType, FaceLandmark?> faceLandmarkMap = face.landmarks;
         FaceContour? leftEye = faceContoursMap[FaceContourType.leftEye];
         FaceContour? rightEye = faceContoursMap[FaceContourType.rightEye];
+        FaceContour? faceOval = faceContoursMap[FaceContourType.face];
         FaceContour? lowerLipTop = faceContoursMap[FaceContourType.lowerLipTop];
         FaceContour? lowerLipBottom =
             faceContoursMap[FaceContourType.lowerLipBottom];
@@ -287,6 +288,95 @@ class FaceDetectorPainter extends CustomPainter {
             // showSnackbar('the distance is $distance');
             // print('the distance is $distance');
           }
+        }
+
+
+        if (selectedScenarios.contains(ScenarioType.LOWEROCCLUSALFRONTALORIENTATION)) {
+          print('about to draw scenario 4 LOWEROCCLUSALFRONTALORIENTATION');
+
+
+
+
+          int tempPointIndex = 5;
+
+
+
+          bool opposite = false;
+          int lowerRimPointIndex = 0;
+          int faceOvalIndex = 24;
+          double extendLeft = -30;
+          double extendRight = -15;
+          if ((face.headEulerAngleY ?? 20) < 0) {
+            print('the john cena is back');
+            extendLeft = 15;
+            extendRight = 30;
+            tempPointIndex = 3;
+            faceOvalIndex = 12;
+            lowerRimPointIndex = upperLipTop!.points.length-1;
+            opposite = true;
+          }
+
+          double lowerRimPointX = upperLipTop!
+              .points[lowerRimPointIndex].x
+              .toDouble();
+          double lowerRimPointY = upperLipTop!
+              .points[lowerRimPointIndex].y
+              .toDouble();
+          double lowerLipUpperPointX = lowerLipTop!
+              .points[4].x
+              .toDouble();
+          double lowerLipUpperPointY = lowerLipTop!
+              .points[5].y
+              .toDouble();
+
+          double lowerLipUpperPointX1 = lowerLipTop!
+              .points[tempPointIndex].x
+              .toDouble();
+          double lowerLipUpperPointY1 = lowerLipTop!
+              .points[tempPointIndex].y
+              .toDouble();
+
+          double lowerLipLowerPointX = lowerLipBottom!
+              .points[tempPointIndex].x
+              .toDouble();
+          double lowerLipLowerPointY = lowerLipBottom!
+              .points[tempPointIndex].y
+              .toDouble();
+
+
+          //lower rim line  ........upar wali line
+          straightLineLogics.drawLineBetweenTwoPoints(
+            p1: CustomPoint(x: lowerRimPointX, y: lowerRimPointY),
+            p2: CustomPoint(x: lowerLipUpperPointX, y: lowerLipUpperPointY),
+             isArrow: true,
+             cPaint: paint..strokeWidth=1.6..color=MyColors.greenColor..style=PaintingStyle.fill,
+             extendSizeRight: extendLeft,
+             extendSizeLeft: extendRight
+          );
+          CustomPoint centerPoint = straightLineLogics.getCenterPointBetweenTwoPoints(
+            p1: CustomPoint(x: lowerLipUpperPointX1, y: lowerLipUpperPointY1),
+            p2: CustomPoint(x: lowerLipLowerPointX, y: lowerLipLowerPointY),
+          );
+          straightLineLogics.getOffset(centerPoint);
+
+          print('hhhhhhhhhhhhhhhhhhh');
+           CustomPoint p2 = CustomPoint(x: faceOval!.points[faceOvalIndex].x.toDouble(), y: faceOval!.points[faceOvalIndex].y.toDouble());
+           straightLineLogics.drawLineBetweenTwoPoints(p1: p2, p2: centerPoint, isArrow: true,);
+          if(image!=null){
+            TextSpan span = new TextSpan(text: 'Lower Rim', style: TextStyle(color: MyColors.greenColor, fontSize: 12));
+            TextPainter tp = new TextPainter(text: span, textAlign: TextAlign.left, textDirection: TextDirection.ltr);
+            tp.layout();
+            print('the text is ${span.text}');
+            straightLineLogics.getOffset(centerPoint);
+
+            tp.paint(canvas, Offset((lowerRimPointX/globalAspectRatio)+(opposite?80:-40), (lowerRimPointY/globalAspectRatio)+(opposite?45:10)));
+            TextSpan span1 = new TextSpan(text: 'Lower Lip', style: TextStyle(color: MyColors.greenColor, fontSize: 12));
+            TextPainter tp1 = new TextPainter(text: span1, textAlign: TextAlign.left, textDirection: TextDirection.ltr);
+            tp1.layout();
+            print('the text is ${span.text}');
+            tp1.paint(canvas, Offset((p2.x/globalAspectRatio)+(opposite?0:-40), (p2.y/globalAspectRatio)+(opposite?10:10)));
+          }
+
         }
 
         print(
