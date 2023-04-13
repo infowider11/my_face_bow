@@ -169,6 +169,7 @@ class HomePageState extends State<HomePage> {
                                 child: GestureDetector(
                                   onTap: () async {
                                     if(allScenarios[index].children[i].scenarioType==ScenarioType.LOWEROCCLUSALLATERALORIENTATION){
+                                      _scaffoldStateKey.currentState?.closeEndDrawer();
                                       push(context: context, screen: LowerOcculsionLateralOrientationScreen());
                                       return;
                                     }

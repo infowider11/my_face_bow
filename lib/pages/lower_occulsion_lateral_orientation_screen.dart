@@ -15,10 +15,12 @@ class LowerOcculsionLateralOrientationScreen extends StatelessWidget {
         color: MyColors.lightBlueColor,
         padding: EdgeInsets.symmetric(horizontal: 16),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             vSizedBox6,
             Container(
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   IconButton(onPressed: (){
                     Navigator.pop(context);
@@ -26,8 +28,9 @@ class LowerOcculsionLateralOrientationScreen extends StatelessWidget {
                   Expanded(
                       child: Center(
                         child: ParagraphText(
-                          'MyFaceBow',
+                          'Lower occlusal plane orientation ',
                           color: Colors.white,
+                          textAlign: TextAlign.center,
                           fontSize: 24,
                         ),
                       )),
@@ -35,9 +38,16 @@ class LowerOcculsionLateralOrientationScreen extends StatelessWidget {
               ),
             ),
             vSizedBox2,
-            Image.asset(MyImages.lowerOcculsionLateralOrientationIllustrationImage, height: 200,),
+            ParagraphText(
+              'Lateral View',
+              color: Colors.white,
+              // textAlign: TextAlign.center,
+              fontSize: 24,
+            ),
+            vSizedBox,
+            Center(child: Image.asset(MyImages.lowerOcculsionLateralOrientationIllustrationImage, height: 200,)),
             vSizedBox2,
-            SubHeadingText('Remember to adjust the posterior border of the lower record block to cover the lower 2/3 of the retromolar pad', color: Colors.red,)
+            SubHeadingText('Remember to adjust the posterior border of the lower record block to cover the lower 2/3 of the retromolar pad', color: Colors.black,)
 
           ],
         ),

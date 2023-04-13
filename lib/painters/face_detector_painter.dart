@@ -454,9 +454,9 @@ class FaceDetectorPainter extends CustomPainter {
 
         }
 
-        /// vertical relation
-        if (selectedScenarios.contains(ScenarioType.VERTICALRELATION)) {
-          print('about to draw scenario 7 vertical relation');
+        /// Outline teeth position
+        if (selectedScenarios.contains(ScenarioType.OUTLINETEETHPOSITION)) {
+          print('about to draw scenario 7 OUTLINETEETHPOSITION');
 
 
 
@@ -466,10 +466,13 @@ class FaceDetectorPainter extends CustomPainter {
 
           double noseBridgePointX = noseBridge!.points[0].x.toDouble();
           double noseBridgePointY = noseBridge!.points[0].y.toDouble();
-          double noseBridgePoint2X = noseBridge!.points[1].x.toDouble();
-          double noseBridgePoint2Y = noseBridge!.points[1].y.toDouble();
+          // double noseBridgePoint2X = noseBridge!.points[1].x.toDouble();
+          // double noseBridgePoint2Y = noseBridge!.points[1].y.toDouble();
+          double noseBridgePoint2X = faceOval!.points[18].x.toDouble();
+          double noseBridgePoint2Y = faceOval!.points[18].y.toDouble();
 
-          straightLineLogics.drawLineBetweenTwoPoints(p1: CustomPoint(x: noseBridgePointX, y: noseBridgePointY),p2: CustomPoint(x: noseBridgePoint2X, y: noseBridgePoint2Y), extendSizeLeft: 6, extendSizeRight: -8);
+
+          straightLineLogics.drawLineBetweenTwoPoints(p1: CustomPoint(x: noseBridgePointX, y: noseBridgePointY),p2: CustomPoint(x: noseBridgePoint2X, y: noseBridgePoint2Y), extendSizeLeft: 3, extendSizeRight: 0);
 
 
         }
