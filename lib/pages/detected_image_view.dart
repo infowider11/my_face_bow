@@ -171,6 +171,22 @@ class DetectedImageViewState extends State<DetectedImageView> {
                         });
                   return Container();
                 }),
+                Consumer<GlobalProvider>(builder: (context, globalData, child) {
+                  if (globalData.selectedScenarios.isNotEmpty) if (globalData
+                      .selectedScenarios[0].scenarioType ==
+                      ScenarioType.LABIALFULLNESS)
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 3),
+                      child: Center(
+                        child: SubHeadingText('Naso Labial Angle: ${globalData.nasoLabialAngle.toStringAsFixed(2)}°',
+                          color:  Colors.red,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    );
+                  return Container();
+                }),
                 Center(
                   child: Consumer<PaintProvider>(
                     builder: (context, paintProvider, child) {

@@ -102,7 +102,8 @@ class FaceDetectorPainter extends CustomPainter {
         FaceContour? lowerLipTop = faceContoursMap[FaceContourType.lowerLipTop];
         FaceContour? lowerLipBottom =
             faceContoursMap[FaceContourType.lowerLipBottom];
-        FaceContour? nose = faceContoursMap[FaceContourType.noseBottom];
+        FaceContour? noseBottom = faceContoursMap[FaceContourType.noseBottom];
+        FaceContour? noseBridge = faceContoursMap[FaceContourType.noseBridge];
         FaceContour? upperLipBottom =
             faceContoursMap[FaceContourType.upperLipBottom];
         FaceContour? upperLipTop = faceContoursMap[FaceContourType.upperLipTop];
@@ -205,18 +206,18 @@ class FaceDetectorPainter extends CustomPainter {
               'the ear points are (${leftEar!.position.x}, ${leftEar!.position.y})');
           double earx1 = double.parse('${leftEar!.position.x}');
           double eary1 = double.parse('${leftEar!.position.y}');
-          double nosex1 = nose!.points[nose!.points.length - 1].x.toDouble();
-          double nosey1 = nose!.points[nose!.points.length - 3].y.toDouble();
+          double nosex1 = noseBottom!.points[noseBottom!.points.length - 1].x.toDouble();
+          double nosey1 = noseBottom!.points[noseBottom!.points.length - 3].y.toDouble();
           bool opposite = false;
           if ((face.headEulerAngleY ?? 20) < 0) {
             earx1 = double.parse('${rightEar!.position.x}');
             eary1 = double.parse('${rightEar!.position.y}');
-            nosex1 = nose!.points[0].x.toDouble();
-            nosey1 = nose!.points[2].y.toDouble();
+            nosex1 = noseBottom!.points[0].x.toDouble();
+            nosey1 = noseBottom!.points[2].y.toDouble();
             opposite = true;
           }
           print(
-              'the nose points are (${nosex1}, ${nosey1}) and (${noseLandmark?.position.x}, ${noseLandmark?.position.y}) ${nose.points.length}');
+              'the nose points are (${nosex1}, ${nosey1}) and (${noseLandmark?.position.x}, ${noseLandmark?.position.y}) ${noseBottom.points.length}');
           straightLineLogics.drawSideFaceLine(
               x2: nosex1,
               y2: nosey1,
@@ -413,6 +414,62 @@ class FaceDetectorPainter extends CustomPainter {
           //     extendSizeLeft: extendRight
           // );
           straightLineLogics.drawStraightLine(x1: lowerLipLeftPointX, y1: lowerLipLeftPointY, x2: lowerLipRightPointX, y2: lowerLipRightPointY, increamentSize: 40);
+
+
+        }
+
+
+/// labial fullness
+        if (selectedScenarios.contains(ScenarioType.LABIALFULLNESS)) {
+          print('about to draw scenario 4 LOWEROCCLUSALFRONTALORIENTATION');
+
+
+
+          bool opposite = false;
+          double extendLeft = 25;
+          double extendRight = 40;
+          int centerIndex = 4;
+          int lowerRimPointRightIndex = 2;
+
+          double noseBottomPointX = noseBottom!.points[1].x.toDouble();
+          double noseBottomPointY = noseBottom!.points[1].y.toDouble();
+          double noseBridgePointX = noseBridge!.points[1].x.toDouble();
+          double noseBridgePointY = noseBridge!.points[1].y.toDouble();
+          double upperLipCenterPointX = upperLipBottom!
+              .points[centerIndex].x
+              .toDouble();
+          double upperLipCenterPointY = upperLipBottom!
+              .points[centerIndex].y
+              .toDouble();
+
+
+          straightLineLogics.getAngleBetweenTwoPoints(
+            x1: noseBottomPointX, y1: noseBottomPointY, x2: upperLipCenterPointX, y2: upperLipCenterPointY,
+              x3: noseBottomPointX, y3: noseBottomPointY, x4: noseBridgePointX, y4: noseBridgePointY+8
+
+          );
+          straightLineLogics.drawSideFaceLine(x1: noseBottomPointX, y1: noseBottomPointY, x2: upperLipCenterPointX, y2: upperLipCenterPointY, increamentSize: 0, opposite: opposite);
+          straightLineLogics.drawSideFaceLine(x1: noseBottomPointX, y1: noseBottomPointY, x2: noseBridgePointX, y2: noseBridgePointY+8, increamentSize: 0, opposite: opposite, );
+
+
+        }
+
+        /// vertical relation
+        if (selectedScenarios.contains(ScenarioType.VERTICALRELATION)) {
+          print('about to draw scenario 7 vertical relation');
+
+
+
+          bool opposite = false;
+
+
+
+          double noseBridgePointX = noseBridge!.points[0].x.toDouble();
+          double noseBridgePointY = noseBridge!.points[0].y.toDouble();
+          double noseBridgePoint2X = noseBridge!.points[1].x.toDouble();
+          double noseBridgePoint2Y = noseBridge!.points[1].y.toDouble();
+
+          straightLineLogics.drawLineBetweenTwoPoints(p1: CustomPoint(x: noseBridgePointX, y: noseBridgePointY),p2: CustomPoint(x: noseBridgePoint2X, y: noseBridgePoint2Y), extendSizeLeft: 6, extendSizeRight: -8);
 
 
         }

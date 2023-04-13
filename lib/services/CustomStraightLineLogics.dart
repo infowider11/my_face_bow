@@ -3,6 +3,9 @@ import 'dart:ui' as UI;
 
 import 'package:flutter/material.dart';
 import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
+import 'package:my_face_bow/constants/global_keys.dart';
+import 'package:my_face_bow/providers/global_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../constants/colors.dart';
 import '../functions/coordinates_translator.dart';
@@ -102,6 +105,32 @@ class CustomStraightLineLogics {
     //   drawTraingleFromPointAndTangent(CustomPoint(x: x2, y: y2),
     //       getTangentAndConstantBetweenTwoPoints(p1, p2), cPaint: paint..style=PaintingStyle.fill..strokeWidth=1);
     // }
+
+  }
+
+
+  getAngleBetweenTwoPoints({
+    required double x1,
+    required double y1,
+    required double x2,
+    required double y2,
+    required double x3,
+    required double y3,
+    required double x4,
+    required double y4,
+}){
+    double m1 = (y2 - y1) / (x2 - x1);
+    double m2 = (y4 - y3) / (x4 - x3);
+    double tanq =  (m1-m2)/(1+(m1*m2));
+    double radians  = math.atan(tanq);
+    double angle = radians/0.0174533;
+    if(angle>0){
+      angle = 180 - angle;
+    }else{
+      angle = 180 + angle;
+    }
+    print('the angle is $angle');
+    Provider.of<GlobalProvider>(MyGlobalKeys.navigatorKey.currentContext!, listen: false).changeNasoLabialAngle(angle);
 
   }
 

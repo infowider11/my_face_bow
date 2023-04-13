@@ -33,6 +33,7 @@ import '../providers/global_provider.dart';
 import '../widgets/CustomTexts.dart';
 import 'CameraPreviewPage.dart';
 import '../rough_pages/camera_view.dart';
+import 'lower_occulsion_lateral_orientation_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({required Key key}) : super(key: key);
@@ -132,6 +133,7 @@ class HomePageState extends State<HomePage> {
 
                             GestureDetector(
                               onTap: () async {
+
                                 // if (selectedScenarios.contains(allScenarios[index])) {
                                 //   selectedScenarios.remove(allScenarios[index]);
                                 // } else {
@@ -166,6 +168,10 @@ class HomePageState extends State<HomePage> {
                                 padding: EdgeInsets.only(left: 32, top: 0),
                                 child: GestureDetector(
                                   onTap: () async {
+                                    if(allScenarios[index].children[i].scenarioType==ScenarioType.LOWEROCCLUSALLATERALORIENTATION){
+                                      push(context: context, screen: LowerOcculsionLateralOrientationScreen());
+                                      return;
+                                    }
                                     // if (selectedScenarios.contains(allScenarios[index])) {
                                     //   selectedScenarios.remove(allScenarios[index]);
                                     // } else {

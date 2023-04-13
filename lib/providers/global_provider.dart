@@ -14,6 +14,13 @@ class GlobalProvider extends ChangeNotifier{
 
   CameraController? _controller;
 
+  double nasoLabialAngle = 0;
+  changeNasoLabialAngle(double angle){
+    nasoLabialAngle = angle;
+
+    notifyListeners();
+  }
+
 
   CameraController? get controller => _controller;
 
