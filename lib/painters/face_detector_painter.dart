@@ -471,8 +471,32 @@ class FaceDetectorPainter extends CustomPainter {
           double noseBridgePoint2X = faceOval!.points[18].x.toDouble();
           double noseBridgePoint2Y = faceOval!.points[18].y.toDouble();
 
+          double extendSizeLeft = -1;
+          double extendSizeRight = 1;
 
-          straightLineLogics.drawLineBetweenTwoPoints(p1: CustomPoint(x: noseBridgePointX, y: noseBridgePointY),p2: CustomPoint(x: noseBridgePoint2X, y: noseBridgePoint2Y), extendSizeLeft: 3, extendSizeRight: 0);
+
+          straightLineLogics.drawLineBetweenTwoPoints(p1: CustomPoint(x: noseBridgePointX, y: noseBridgePointY),p2: CustomPoint(x: noseBridgePoint2X, y: noseBridgePoint2Y), extendSizeLeft: extendSizeLeft, extendSizeRight: extendSizeRight);
+
+
+
+
+          double leftLinePoint1X = upperLipTop!.points[0].x.toDouble();
+          double leftLinePoint1Y = upperLipTop!.points[0].y.toDouble();
+          // double leftLinePoint2X = lowerLipTop!.points[8].x.toDouble();
+          // double leftLinePoint2Y = lowerLipTop!.points[8].y.toDouble();
+          double rightLinePoint1X = upperLipTop!.points[10].x.toDouble();
+          double rightLinePoint1Y = upperLipTop!.points[10].y.toDouble();
+          // double rightLinePoint2X = lowerLipBottom!.points[0].x.toDouble();
+          // double rightLinePoint2Y = lowerLipBottom!.points[0].y.toDouble();
+
+
+          straightLineLogics.drawParallelLinePassingFromAPoint(p1: CustomPoint(x: noseBridgePointX, y: noseBridgePointY),p2: CustomPoint(x: noseBridgePoint2X, y: noseBridgePoint2Y), extendSizeLeft: extendSizeLeft, extendSizeRight: extendSizeRight, point:CustomPoint(x: leftLinePoint1X, y: leftLinePoint1Y) );
+          straightLineLogics.drawParallelLinePassingFromAPoint(p1: CustomPoint(x: noseBridgePointX, y: noseBridgePointY),p2: CustomPoint(x: noseBridgePoint2X, y: noseBridgePoint2Y), extendSizeLeft: extendSizeLeft, extendSizeRight: extendSizeRight, point:CustomPoint(x: rightLinePoint1X, y: rightLinePoint1Y) );
+          // straightLineLogics.drawLineBetweenTwoPoints(p1: CustomPoint(x: leftLinePoint1X, y: leftLinePoint1Y),p2: CustomPoint(x: leftLinePoint2X, y: leftLinePoint2Y), extendSizeLeft: 3, extendSizeRight: 10);
+          // straightLineLogics.drawLineBetweenTwoPoints(p1: CustomPoint(x: leftLinePoint1X, y: leftLinePoint1Y),p2: CustomPoint(x: leftLinePoint2X, y: leftLinePoint2Y), extendSizeLeft: 3, extendSizeRight: 0);
+          // straightLineLogics.drawLineBetweenTwoPoints(p1: CustomPoint(x: rightLinePoint1X, y: rightLinePoint1Y),p2: CustomPoint(x: rightLinePoint2X, y:rightLinePoint2Y), extendSizeLeft: 3, extendSizeRight: 0);
+
+
 
 
         }

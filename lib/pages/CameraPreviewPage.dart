@@ -277,6 +277,7 @@ class CameraPreviewPageState extends State<CameraPreviewPage>
     }
 
     /// TODO: We can change resolution from here
+    await Future.delayed(Duration(seconds: 1));
     Provider.of<GlobalProvider>(context, listen: false).updateCameraController(CameraController(
       cameraDescription,
       kIsWeb ? ResolutionPreset.max : ResolutionPreset.medium,

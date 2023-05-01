@@ -381,4 +381,51 @@ class CustomStraightLineLogics {
   }) {
     return CustomPoint(x: (p1.x + p2.x) / 2, y: (p1.y + p2.y) / 2);
   }
+
+
+  drawParallelLinePassingFromAPoint({required CustomPoint p1,required CustomPoint p2,required CustomPoint point, double extendSizeLeft = 0,
+    double extendSizeRight = 0,}){
+    StraightLineModal straightLineModal = getTangentAndConstantBetweenTwoPoints(p1, p2);
+
+    // y = mx+c
+    double y = point.y;
+    double x = point.x;
+    double m = straightLineModal.tangent;
+    double c = y-(m*x);
+
+    print('the point is ($x,$y) and tang is $m Ans c is $c and linec is ${straightLineModal.constant}');
+
+    double point1TangentConstant = p1.y +(p1.x/m);
+    double point2TangentConstant = p2.y +(p2.x/m);
+
+
+    double point1x = (point1TangentConstant - c)/(m+(1/m));
+    // point1x = (point1TangentConstant - c);
+    double point1y = m*point1x + c;
+
+    double point2x = (point2TangentConstant - c)/(m+(1/m));
+    double point2y = m*point2x + c;
+
+    print('the tangent is $m ');
+    print('the  constant is $c ');
+    print('the p1 constant is $point1TangentConstant ');
+
+    print('the points are ($point1x, $point1y) parrallel to point (${p1.x}, ${p1.y}');
+    print('the second points are ($point2x, $point2y) parrallel to point (${p2.x}, ${p2.y}');
+    drawLineBetweenTwoPoints(p1: CustomPoint(x: point1x, y: point1y), p2: CustomPoint(x: point2x, y: point2y), extendSizeRight: extendSizeRight, extendSizeLeft: extendSizeLeft);
+
+    // double y1 = 0;
+    // double x1 = 0;
+
+    // y1 = (-1*x)/m + c;
+    //
+    // y1 = m*x + straightLineModal.constant;
+    //  (-1*x)/m + c = m*x + straightLineModal.constant;
+
+    // x1 = (c - straightLineModal.constant)/(1+(1/m));
+
+
+    
+    
+  }
 }
