@@ -46,7 +46,7 @@ class DetectedImageViewState extends State<DetectedImageView> {
               crossAxisAlignment: CrossAxisAlignment.start,
               // mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                vSizedBox2,
+                vSizedBox,
                 Consumer<PaintProvider>(
                     builder: (context, paintProvider, child) {
                   return Padding(
@@ -130,7 +130,7 @@ class DetectedImageViewState extends State<DetectedImageView> {
                     ),
                   );
                 }),
-                vSizedBox,
+                vSizedBox05,
                 Center(
                   child: Consumer<PaintProvider>(
                       builder: (context, paintProvider, child) {
@@ -179,14 +179,24 @@ class DetectedImageViewState extends State<DetectedImageView> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 16, vertical: 3),
                       child: Center(
-                        child: SubHeadingText('Naso Labial Angle: ${globalData.nasoLabialAngle.toStringAsFixed(2)}°',
-                          color:  Colors.red,
-                          textAlign: TextAlign.center,
+                        child: Column(
+                          children: [
+                            SubHeadingText('Naso Labial Angle: ${globalData.nasoLabialAngle.toStringAsFixed(2)}°',
+                              color:  Colors.red,
+                              textAlign: TextAlign.center,
+                            ),
+                            SubHeadingText(globalData.nasoLabialAngle>90?"You have to add wax in the laibal surface":"You have to remove from laibal wax",
+                              color:  Colors.red,
+                              textAlign: TextAlign.center,
+                            ),
+
+                          ],
                         ),
                       ),
                     );
                   return Container();
                 }),
+                vSizedBox05,
                 Center(
                   child: Consumer<PaintProvider>(
                     builder: (context, paintProvider, child) {
@@ -194,6 +204,8 @@ class DetectedImageViewState extends State<DetectedImageView> {
                         text: 'Save image to gallery',
                         horizontalMargin: 16,
                         width: 260,
+                        verticalMargin: 0,
+                        verticalPadding: 4,
                         onTap: ()async{
                           print('hhhhhh....1');
                           ui.PictureRecorder recorder = ui.PictureRecorder();
