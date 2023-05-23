@@ -109,7 +109,7 @@ class CustomStraightLineLogics {
   }
 
 
-  getAngleBetweenTwoPoints({
+  double getAngleBetweenTwoPoints({
     required double x1,
     required double y1,
     required double x2,
@@ -130,6 +130,7 @@ class CustomStraightLineLogics {
       angle = 180 + angle;
     }
     print('the angle is $angle');
+    return angle;
     Provider.of<GlobalProvider>(MyGlobalKeys.navigatorKey.currentContext!, listen: false).changeNasoLabialAngle(angle);
 
   }

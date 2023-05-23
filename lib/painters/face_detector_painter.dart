@@ -98,6 +98,10 @@ class FaceDetectorPainter extends CustomPainter {
         Map<FaceLandmarkType, FaceLandmark?> faceLandmarkMap = face.landmarks;
         FaceContour? leftEye = faceContoursMap[FaceContourType.leftEye];
         FaceContour? rightEye = faceContoursMap[FaceContourType.rightEye];
+        FaceContour? rightEyebrowBottom = faceContoursMap[FaceContourType.rightEyebrowBottom];
+        FaceContour? rightEyebrowTop = faceContoursMap[FaceContourType.rightEyebrowTop];
+        FaceContour? leftEyebrowBottom = faceContoursMap[FaceContourType.leftEyebrowBottom];
+        FaceContour? leftEyebrowTop = faceContoursMap[FaceContourType.leftEyebrowTop];
         FaceContour? faceOval = faceContoursMap[FaceContourType.face];
         FaceContour? lowerLipTop = faceContoursMap[FaceContourType.lowerLipTop];
         FaceContour? lowerLipBottom =
@@ -421,7 +425,7 @@ class FaceDetectorPainter extends CustomPainter {
 
 /// labial fullness
         if (selectedScenarios.contains(ScenarioType.LABIALFULLNESS)) {
-          print('about to draw scenario 4 LOWEROCCLUSALFRONTALORIENTATION');
+          print('about to draw scenario 5 LABIALFULLNESS');
 
 
 
@@ -443,11 +447,12 @@ class FaceDetectorPainter extends CustomPainter {
               .toDouble();
 
 
-          straightLineLogics.getAngleBetweenTwoPoints(
+          double angle = straightLineLogics.getAngleBetweenTwoPoints(
             x1: noseBottomPointX, y1: noseBottomPointY, x2: upperLipCenterPointX, y2: upperLipCenterPointY,
               x3: noseBottomPointX, y3: noseBottomPointY, x4: noseBridgePointX, y4: noseBridgePointY+8
 
           );
+          Provider.of<GlobalProvider>(MyGlobalKeys.navigatorKey.currentContext!, listen: false).changeNasoLabialAngle(angle);
           straightLineLogics.drawSideFaceLine(x1: noseBottomPointX, y1: noseBottomPointY, x2: upperLipCenterPointX, y2: upperLipCenterPointY, increamentSize: 0, opposite: opposite);
           straightLineLogics.drawSideFaceLine(x1: noseBottomPointX, y1: noseBottomPointY, x2: noseBridgePointX, y2: noseBridgePointY+8, increamentSize: 0, opposite: opposite, );
 
@@ -497,6 +502,47 @@ class FaceDetectorPainter extends CustomPainter {
           // straightLineLogics.drawLineBetweenTwoPoints(p1: CustomPoint(x: rightLinePoint1X, y: rightLinePoint1Y),p2: CustomPoint(x: rightLinePoint2X, y:rightLinePoint2Y), extendSizeLeft: 3, extendSizeRight: 0);
 
 
+
+
+        }
+
+
+        /// FACIALPROFILE
+        if (selectedScenarios.contains(ScenarioType.FACIALPROFILE)) {
+          print('about to draw scenario 8 second last FACIALPROFILE');
+
+
+
+          bool opposite = false;
+
+
+
+
+          double rightEyeTopPointX = rightEyebrowBottom!.points[4].x.toDouble();
+          double rightEyeTopPointY = rightEyebrowBottom!.points[4].y.toDouble();
+          // double noseBridgePoint2X = noseBridge!.points[1].x.toDouble();
+          // double noseBridgePoint2Y = noseBridge!.points[1].y.toDouble();
+          double nosebottomCenterPointX = noseBottom!.points[1].x.toDouble()+10;
+          double nosebottomCenterPointY = noseBottom!.points[1].y.toDouble();
+
+          double faceOvalBottomCenterPointX = faceOval!.points[18].x.toDouble();
+          double faceOvalBottomCenterPointY = faceOval!.points[18].y.toDouble();
+
+
+          double extendSizeLeft = 0;
+          double extendSizeRight = 0;
+
+
+          straightLineLogics.drawLineBetweenTwoPoints(p1: CustomPoint(x: rightEyeTopPointX, y: rightEyeTopPointY),p2: CustomPoint(x: nosebottomCenterPointX, y: nosebottomCenterPointY), extendSizeLeft: extendSizeLeft, extendSizeRight: extendSizeRight);
+          straightLineLogics.drawLineBetweenTwoPoints(p1: CustomPoint(x: faceOvalBottomCenterPointX, y: faceOvalBottomCenterPointY),p2: CustomPoint(x: nosebottomCenterPointX, y: nosebottomCenterPointY), extendSizeLeft: extendSizeLeft, extendSizeRight: extendSizeRight);
+
+
+          double angle = straightLineLogics.getAngleBetweenTwoPoints(
+              x1: nosebottomCenterPointX, y1: nosebottomCenterPointY, x2: rightEyeTopPointX, y2: rightEyeTopPointY,
+              x3: nosebottomCenterPointX, y3: nosebottomCenterPointY, x4: faceOvalBottomCenterPointX, y4: faceOvalBottomCenterPointY
+
+          );
+          Provider.of<GlobalProvider>(MyGlobalKeys.navigatorKey.currentContext!, listen: false).changeFacialProfileAngle(angle);
 
 
         }

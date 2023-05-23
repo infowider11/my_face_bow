@@ -8,6 +8,7 @@ class MyImages{
   static const appLogo = '${baseImageUrl}applogonew.png';
   static const faceSkeleton = '${baseImageUrl}faceSkeleton.png';
   static const lowerOcculsionLateralOrientationIllustrationImage = '${baseImageUrl}retromolar.jpg';
+  static const recordingTheCentralRelationImage = '${baseImageUrl}recordingTheCentralRelationImage.png';
 
 
 }

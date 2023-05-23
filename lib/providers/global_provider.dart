@@ -15,10 +15,25 @@ class GlobalProvider extends ChangeNotifier{
   CameraController? _controller;
 
   double nasoLabialAngle = 0;
+  double facialProfileAngle = 0;
   changeNasoLabialAngle(double angle){
-    nasoLabialAngle = angle;
+    if(nasoLabialAngle!=angle){
+      nasoLabialAngle = angle;
+      notifyListeners();
+    }
 
-    notifyListeners();
+
+
+  }
+
+  changeFacialProfileAngle(double angle){
+    if(facialProfileAngle!=angle){
+      facialProfileAngle = angle;
+      notifyListeners();
+    }
+
+
+
   }
 
 

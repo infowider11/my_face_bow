@@ -194,6 +194,30 @@ class DetectedImageViewState extends State<DetectedImageView> {
                         ),
                       ),
                     );
+
+
+                  if (globalData.selectedScenarios.isNotEmpty) if (globalData
+                      .selectedScenarios[0].scenarioType ==
+                      ScenarioType.FACIALPROFILE)
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 3),
+                      child: Center(
+                        child: Column(
+                          children: [
+                            // SubHeadingText('Facial Profile Angle: ${globalData.facialProfileAngle.toStringAsFixed(2)}°',
+                            //   color:  Colors.red,
+                            //   textAlign: TextAlign.center,
+                            // ),
+                            SubHeadingText(globalData.facialProfileAngle>180?"You are Retrognathic":globalData.facialProfileAngle<180?"You are Prognathic":"Orthognathic",
+                              color:  Colors.red,
+                              textAlign: TextAlign.center,
+                            ),
+
+                          ],
+                        ),
+                      ),
+                    );
                   return Container();
                 }),
                 vSizedBox05,

@@ -16,6 +16,7 @@ import 'package:my_face_bow/functions/image_picker.dart';
 import 'package:my_face_bow/pages/about_page.dart';
 import 'package:my_face_bow/pages/detected_image_view.dart';
 import 'package:my_face_bow/pages/info_page.dart';
+import 'package:my_face_bow/pages/recording_the_centric_relation.dart';
 import 'package:my_face_bow/pages/sample_page.dart';
 import 'package:my_face_bow/pages/side_drawer.dart';
 import 'package:my_face_bow/painters/LinePainter.dart';
@@ -133,6 +134,11 @@ class HomePageState extends State<HomePage> {
 
                             GestureDetector(
                               onTap: () async {
+                                if(allScenarios[index].scenarioType==ScenarioType.RECORDINGTHECENTRALRELATION){
+                                  _scaffoldStateKey.currentState?.closeEndDrawer();
+                                  push(context: context, screen: RecordingTheCentricRelation());
+                                  return;
+                                }
 
                                 // if (selectedScenarios.contains(allScenarios[index])) {
                                 //   selectedScenarios.remove(allScenarios[index]);
@@ -168,9 +174,15 @@ class HomePageState extends State<HomePage> {
                                 padding: EdgeInsets.only(left: 32, top: 0),
                                 child: GestureDetector(
                                   onTap: () async {
+                                    print('The selected scenario is ${allScenarios[index].scenarioType}');
                                     if(allScenarios[index].children[i].scenarioType==ScenarioType.LOWEROCCLUSALLATERALORIENTATION){
                                       _scaffoldStateKey.currentState?.closeEndDrawer();
                                       push(context: context, screen: LowerOcculsionLateralOrientationScreen());
+                                      return;
+                                    }
+                                    if(allScenarios[index].scenarioType==ScenarioType.RECORDINGTHECENTRALRELATION){
+                                      _scaffoldStateKey.currentState?.closeEndDrawer();
+                                      push(context: context, screen: RecordingTheCentricRelation());
                                       return;
                                     }
                                     // if (selectedScenarios.contains(allScenarios[index])) {

@@ -72,7 +72,7 @@ List<ScenarioModal> allScenarios = [
     scenarioType: ScenarioType.FACIALPROFILE,
   ),
   ScenarioModal(
-    scenarioName: 'Face Profile',
+    scenarioName: 'Recording The Centric Relation',
     scenarioType: ScenarioType.RECORDINGTHECENTRALRELATION,
   ),
   // ScenarioModal(scenarioName: 'Scenario Type 8', scenarioType: ScenarioType.SCENARIO8),
