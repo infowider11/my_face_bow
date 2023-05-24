@@ -21,12 +21,14 @@ class FaceDetectorPainter extends CustomPainter {
     this.absoluteImageSize,
     this.rotation, {
     required this.image,
+         this.withoutWax,
   });
 
   final List<Face> faces;
   final Size absoluteImageSize;
   final InputImageRotation rotation;
   final UI.Image? image;
+  final bool? withoutWax;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -63,6 +65,12 @@ class FaceDetectorPainter extends CustomPainter {
       }
     }
 
+print('building scenarios');
+    // if (!selectedScenarios.contains(ScenarioType.VERTICALRELATION)) {
+    //   print('will not build canvas image');
+    //   _paintBackgroundImage(canvas);
+    // }
+    print('will not build canvas image');
     _paintBackgroundImage(canvas);
 
     CustomStraightLineLogics straightLineLogics = CustomStraightLineLogics(
@@ -531,6 +539,16 @@ class FaceDetectorPainter extends CustomPainter {
 
           double extendSizeLeft = 0;
           double extendSizeRight = 0;
+          // bool opposite = false;
+          if ((face.headEulerAngleY ?? 20) > 0) {
+            print('the opposite is true: ${face.headEulerAngleY}');
+            nosebottomCenterPointX = noseBottom!.points[1].x.toDouble()-10;
+             rightEyeTopPointX = leftEyebrowBottom!.points[4].x.toDouble();
+             rightEyeTopPointY = leftEyebrowBottom!.points[4].y.toDouble();
+            opposite = true;
+          }else{
+            print('The opposite is not true: ${face.headEulerAngleY}');
+          }
 
 
           straightLineLogics.drawLineBetweenTwoPoints(p1: CustomPoint(x: rightEyeTopPointX, y: rightEyeTopPointY),p2: CustomPoint(x: nosebottomCenterPointX, y: nosebottomCenterPointY), extendSizeLeft: extendSizeLeft, extendSizeRight: extendSizeRight);
@@ -544,6 +562,54 @@ class FaceDetectorPainter extends CustomPainter {
           );
           Provider.of<GlobalProvider>(MyGlobalKeys.navigatorKey.currentContext!, listen: false).changeFacialProfileAngle(angle);
 
+
+        }
+
+
+
+        /// VERTICALRELATION
+        if (selectedScenarios.contains(ScenarioType.VERTICALRELATION)) {
+          print('about to draw scenario 8 second last VERTICALRELATION');
+
+
+
+          bool opposite = false;
+
+
+
+
+          double noseTipPointX = noseBridge!.points[1].x.toDouble();
+          double noseTipPointY = noseBridge!.points[1].y.toDouble();
+          double faceOvalBottomCenterPointX = faceOval!.points[18].x.toDouble();
+          double faceOvalBottomCenterPointY = faceOval!.points[18].y.toDouble();
+
+
+          double extendSizeLeft = 0;
+          double extendSizeRight = 0;
+          // bool opposite = false;
+          if ((face.headEulerAngleY ?? 20) > 0) {
+            print('the opposite is true: ${face.headEulerAngleY}');
+            // nosebottomCenterPointX = noseBottom!.points[1].x.toDouble()-10;
+            // rightEyeTopPointX = leftEyebrowBottom!.points[4].x.toDouble();
+            // rightEyeTopPointY = leftEyebrowBottom!.points[4].y.toDouble();
+            opposite = true;
+          }else{
+            print('The opposite is not true: ${face.headEulerAngleY}');
+          }
+
+
+          // straightLineLogics.drawLineBetweenTwoPoints(p1: CustomPoint(x: rightEyeTopPointX, y: rightEyeTopPointY),p2: CustomPoint(x: nosebottomCenterPointX, y: nosebottomCenterPointY), extendSizeLeft: extendSizeLeft, extendSizeRight: extendSizeRight);
+          straightLineLogics.drawLineBetweenTwoPoints(p1: CustomPoint(x: faceOvalBottomCenterPointX, y: faceOvalBottomCenterPointY),p2: CustomPoint(x: noseTipPointX, y: noseTipPointY), extendSizeLeft: extendSizeLeft, extendSizeRight: extendSizeRight);
+
+
+          double distance = straightLineLogics.measureDistanceBetweenTwoPoints(
+            p1: CustomPoint(x: faceOvalBottomCenterPointX, y: faceOvalBottomCenterPointY),
+            p2: CustomPoint(x: noseTipPointX , y: noseTipPointY),
+            extendSizeRight: 0,
+            extendSizeLeft: 0,
+          );
+          print('the distance without wax is ${distance}');
+          Provider.of<GlobalProvider>(MyGlobalKeys.navigatorKey.currentContext!, listen: false).changeVerticalRelationDistance(withoutWax??true, distance);
 
         }
 

@@ -19,6 +19,8 @@ import 'package:my_face_bow/pages/info_page.dart';
 import 'package:my_face_bow/pages/recording_the_centric_relation.dart';
 import 'package:my_face_bow/pages/sample_page.dart';
 import 'package:my_face_bow/pages/side_drawer.dart';
+import 'package:my_face_bow/pages/vertical_relation.dart';
+import 'package:my_face_bow/pages/vertical_relation/verticalReleationViewPage.dart';
 import 'package:my_face_bow/painters/LinePainter.dart';
 import 'package:my_face_bow/providers/PaintProvider.dart';
 import 'package:my_face_bow/widgets/custom_full_page_loader.dart';
@@ -45,6 +47,9 @@ class HomePage extends StatefulWidget {
 
 class HomePageState extends State<HomePage> {
   File? file;
+
+  File? fileWithWax;
+  File? fileWithoutWax;
   bool load = false;
 
   showErrorMessage() {
@@ -81,6 +86,7 @@ class HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+  // load = false;
     // setGlobalAspectRatio(MediaQuery.of(context).size.aspectRatio, MediaQuery.of(context).size.width);
     // print('the aspect ratio is ${globalAspectRatio} and width is ${MediaQuery.of(context).size.width}');
     return SafeArea(
@@ -140,6 +146,13 @@ class HomePageState extends State<HomePage> {
                                   return;
                                 }
 
+                                // if(allScenarios[index].scenarioType==ScenarioType.VERTICALRELATION){
+                                //     globalData.updateScenario([allScenarios[index]]);
+                                //   _scaffoldStateKey.currentState?.closeEndDrawer();
+                                //   push(context: context, screen: VerticalRelationPage());
+                                //   return;
+                                // }
+
                                 // if (selectedScenarios.contains(allScenarios[index])) {
                                 //   selectedScenarios.remove(allScenarios[index]);
                                 // } else {
@@ -178,11 +191,6 @@ class HomePageState extends State<HomePage> {
                                     if(allScenarios[index].children[i].scenarioType==ScenarioType.LOWEROCCLUSALLATERALORIENTATION){
                                       _scaffoldStateKey.currentState?.closeEndDrawer();
                                       push(context: context, screen: LowerOcculsionLateralOrientationScreen());
-                                      return;
-                                    }
-                                    if(allScenarios[index].scenarioType==ScenarioType.RECORDINGTHECENTRALRELATION){
-                                      _scaffoldStateKey.currentState?.closeEndDrawer();
-                                      push(context: context, screen: RecordingTheCentricRelation());
                                       return;
                                     }
                                     // if (selectedScenarios.contains(allScenarios[index])) {
@@ -239,12 +247,30 @@ class HomePageState extends State<HomePage> {
                   Expanded(
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 16),
-                      child: Center(
-                          child: ParagraphText(
-                        'MyFaceBow',
-                        color: Colors.white,
-                        fontSize: 24,
-                      )),
+                      width: MediaQuery.of(context).size.width,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ParagraphText(
+                            'MyFaceBow',
+                            color: Colors.white,
+                            fontSize: 24,
+                          ),
+                          Consumer<GlobalProvider>(
+                            builder: (context, globalProvider,child) {
+                              if(globalProvider.selectedScenarios.isNotEmpty && globalProvider.selectedScenarios.first.scenarioType==ScenarioType.VERTICALRELATION)
+                              return ParagraphText(
+                                fileWithoutWax==null?'Take a photo without wax': 'Take a photo with wax',
+                                color: Colors.white,
+                                fontSize: 20,
+                              );
+                              return SizedBox();
+                            }
+                          ),
+
+
+                        ],
+                      )
                     ),
                   ),
                   // if (_customPaint != null && file != null)
@@ -262,17 +288,17 @@ class HomePageState extends State<HomePage> {
                           // clipBehavior: Clip.antiAlias,
                           // child: FaceDetectorView(),
                           child: CameraPreviewPage(
-                            key: MyGlobalKeys.cameraPreviewPageStateKey,
-                            // customPaint: _customPaint,
-                            onImage: (
-                                inputImage,
-                                ) {
+                                key: MyGlobalKeys.cameraPreviewPageStateKey,
+                                // customPaint: _customPaint,
+                                onImage: (
+                                    inputImage,
+                                    ) {
 
 
 
 
-                                processImage(inputImage, fromCamera: true);
-                            },
+                                    processImage(inputImage, fromCamera: true);
+                                },
                           ),
 
                         ),
@@ -319,7 +345,128 @@ class HomePageState extends State<HomePage> {
                           if (globalData.selectedScenarios.length == 0) {
                             showSnackbar('Please select the scenarios');
                             // _scaffoldStateKey.currentState?.openEndDrawer();
-                          } else {
+                          }else if(globalData.selectedScenarios.first.scenarioType==ScenarioType.VERTICALRELATION){
+                            setState(() {
+                              load = true;
+                            });
+
+                            try{
+                              await Provider.of<GlobalProvider>(context, listen: false).controller!.stopImageStream();
+                            }catch(e){
+                              print('Error in catch block 52 No Camera is streaming images ...already stopped $e');
+                            }
+                            print('Hello world.....1');
+                            if(fileWithoutWax==null){
+                              print('Hello world.....2');
+                              await Provider.of<PaintProvider>(context, listen: false).updateCustomPainter(null, null);
+                              print('Hello world.....3');
+                              fileWithoutWax = await MyGlobalKeys
+                                  .cameraPreviewPageStateKey.currentState
+                                  ?.takePictureInFileFormat();
+                              print('Hello world.....4');
+                              if (fileWithoutWax != null) {
+                                // InputImage inputImage = InputImage.fromFilePath(file!.path);
+
+                                Directory path =
+                                await getApplicationSupportDirectory();
+                                print('the path is __________${path.path}');
+
+                                fileWithoutWax = await testCompressAndGetFile(
+                                    fileWithoutWax!, path.path + '/temp${DateTime.now()}.jpg');
+                                print('the compressed image is $fileWithoutWax');
+
+
+                                InputImage inputImage =
+                                InputImage.fromFile(fileWithoutWax!);
+                                print('the input image is $inputImage');
+                                bool result = await processImage(inputImage!);
+                                print('the result is $result');
+                                globalData.photoErrorCounter = 0;
+                                if (result) {
+                                  // await push(
+                                  //     context: context,
+                                  //     screen: DetectedImageView(
+                                  //         key: MyGlobalKeys
+                                  //             .detectedImageViewStateKey,
+                                  //         // customPaint: _customPaint!,
+                                  //         file: file!));
+                                } else {
+                                  showSnackbar('No Face Found. Please retry');
+                                }
+
+
+                                // push(context: context, screen: DetectedImageView(customPaint: _customPaint!, file: file!))
+                              }else{
+                                print('file without wax is nulll');
+                              }
+                              try{
+
+                              }catch(e){
+                                print('Error in catch block 23541 $e');
+                                showSnackbar('Error : $e');
+                              }
+                            }
+                            else{
+                              print('Hello world.....20');
+                              try{
+                                print('Hello world.....30');
+                                await Provider.of<PaintProvider>(context, listen: false).updateCustomPainter(null, null);
+                                print('Hello world.....40');
+                                fileWithWax = await MyGlobalKeys
+                                    .cameraPreviewPageStateKey.currentState
+                                    ?.takePictureInFileFormat();
+
+                                if (fileWithWax != null) {
+                                  // InputImage inputImage = InputImage.fromFilePath(file!.path);
+
+                                  Directory path =
+                                  await getApplicationSupportDirectory();
+                                  print('the path is __________${path.path}');
+
+                                  fileWithWax = await testCompressAndGetFile(
+                                      fileWithWax!, path.path + '/temp${DateTime.now()}.jpg');
+                                  print('the compressed image is $file');
+
+
+                                  InputImage inputImage =
+                                  InputImage.fromFile(fileWithWax!);
+                                  bool result = await processImage(inputImage!);
+                                  globalData.photoErrorCounter = 0;
+                                  if (result) {
+                                    showSnackbar('hurrayyy111');
+
+
+
+                                    // Provider.of<PaintProvider>(context, listen: false).updateCustomPainter(paint, painter)
+                                    await push(context: context, screen: VerticalRelationPageViewPage(key: MyGlobalKeys.verticalRelationPageViewPageKey, fileWithWax: fileWithWax!, fileWithoutWax: fileWithoutWax!));
+                                    fileWithoutWax = null;
+                                    fileWithWax = null;
+                                    // await push(
+                                    //     context: context,
+                                    //     screen: DetectedImageView(
+                                    //         key: MyGlobalKeys
+                                    //             .detectedImageViewStateKey,
+                                    //         // customPaint: _customPaint!,
+                                    //         file: file!));
+                                  } else {
+                                    showSnackbar('No Face Found. Please retry');
+                                  }
+
+
+                                  // push(context: context, screen: DetectedImageView(customPaint: _customPaint!, file: file!))
+                                }
+                              }catch(e){
+
+                              }
+                            }
+                            // await Provider.of<GlobalProvider>(context, listen: false).controller!.stopImageStream();
+
+                            setState(() {
+                              load = false;
+                            });
+                            await Provider.of<GlobalProvider>(context, listen: false).controller!.startImageStream(MyGlobalKeys.cameraPreviewPageStateKey.currentState!.processCameraImage);
+
+                          }else {
                             setState(() {
                               load = true;
                             });
@@ -481,7 +628,7 @@ class HomePageState extends State<HomePage> {
 
 
 
-  Future<bool> processImage(InputImage inputImage,{bool fromCamera = false}
+  Future<bool> processImage(InputImage inputImage,{bool fromCamera = false,}
      ) async {
     // // print('processing image 10 $_canProcess $_isBusy');
     // // showSnackbar('Processing image');
@@ -514,7 +661,46 @@ class HomePageState extends State<HomePage> {
     ui.Image? imageFormatFile;
 if(!fromCamera){
   print('the image is not from camera');
-  imageFormatFile = await loadUiImage(file!.readAsBytesSync());
+
+  if(Provider.of<GlobalProvider>(context, listen: false).selectedScenarios.isNotEmpty  && Provider.of<GlobalProvider>(context, listen: false).selectedScenarios.first.scenarioType==ScenarioType.VERTICALRELATION){
+    if(fileWithWax!=null){
+      imageFormatFile = await loadUiImage(fileWithWax!.readAsBytesSync());
+    //   Size(globalWidth, globalHeight),
+    // InputImageRotation.rotation0deg,
+      final painter = FaceDetectorPainter(
+        faces,
+        // inputImage.inputImageData!.size,
+        // inputImage.inputImageData!.imageRotation,
+        Size(globalWidth, globalHeight),
+        InputImageRotation.rotation0deg,
+        image: imageFormatFile,
+        withoutWax: false,
+      );
+
+      print('hello____${DateTime.now().millisecondsSinceEpoch}');
+
+      Provider.of<PaintProvider>(context, listen: false).updateCustomPainterForWax(CustomPaint(painter: painter), painter);
+    }else{
+      imageFormatFile = await loadUiImage(fileWithoutWax!.readAsBytesSync());
+      final painter = FaceDetectorPainter(
+        faces,
+        // inputImage.inputImageData!.size,
+        // inputImage.inputImageData!.imageRotation,
+        Size(globalWidth, globalHeight),
+        InputImageRotation.rotation0deg,
+        image: imageFormatFile,
+        withoutWax: true
+      );
+
+      print('hello____${DateTime.now().millisecondsSinceEpoch}');
+
+      Provider.of<PaintProvider>(context, listen: false).updateCustomPainterForWithoutWax(CustomPaint(painter: painter), painter);
+    }
+
+  }else{
+    imageFormatFile = await loadUiImage(file!.readAsBytesSync());
+  }
+
 }
 
     // showSnackbar('the detected faces are ${faces.length}');
