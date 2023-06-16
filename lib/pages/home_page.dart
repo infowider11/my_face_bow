@@ -433,7 +433,7 @@ class HomePageState extends State<HomePage> {
                                   bool result = await processImage(inputImage!);
                                   globalData.photoErrorCounter = 0;
                                   if (result) {
-                                    showSnackbar('hurrayyy111');
+                                    // showSnackbar('hurrayyy111');
 
 
 

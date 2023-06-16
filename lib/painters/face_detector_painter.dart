@@ -530,7 +530,7 @@ print('building scenarios');
           double rightEyeTopPointY = rightEyebrowBottom!.points[4].y.toDouble();
           // double noseBridgePoint2X = noseBridge!.points[1].x.toDouble();
           // double noseBridgePoint2Y = noseBridge!.points[1].y.toDouble();
-          double nosebottomCenterPointX = noseBottom!.points[1].x.toDouble()+10;
+          double nosebottomCenterPointX = noseBottom!.points[1].x.toDouble()+13;
           double nosebottomCenterPointY = noseBottom!.points[1].y.toDouble();
 
           double faceOvalBottomCenterPointX = faceOval!.points[18].x.toDouble();
@@ -542,7 +542,7 @@ print('building scenarios');
           // bool opposite = false;
           if ((face.headEulerAngleY ?? 20) > 0) {
             print('the opposite is true: ${face.headEulerAngleY}');
-            nosebottomCenterPointX = noseBottom!.points[1].x.toDouble()-10;
+            nosebottomCenterPointX = noseBottom!.points[1].x.toDouble()-6;
              rightEyeTopPointX = leftEyebrowBottom!.points[4].x.toDouble();
              rightEyeTopPointY = leftEyebrowBottom!.points[4].y.toDouble();
             opposite = true;
@@ -578,14 +578,16 @@ print('building scenarios');
 
 
 
-          double noseTipPointX = noseBridge!.points[1].x.toDouble();
+          // double noseTipPointX = ((noseBridge!.points[0].x.toDouble() + noseBottom!.points[1].x.toDouble())/2)+0;
+          // double noseTipPointX = (((noseBottom!.points[0].x.toDouble() + noseBottom!.points[2].x.toDouble())/2) + upperLipTop!.points[5].x.toDouble())/2;
+          double noseTipPointX = (noseBottom!.points[1].x.toDouble() + noseBridge!.points[1].x.toDouble())/2;
           double noseTipPointY = noseBridge!.points[1].y.toDouble();
-          double faceOvalBottomCenterPointX = faceOval!.points[18].x.toDouble();
+          double faceOvalBottomCenterPointX = (faceOval!.points[18].x.toDouble()+faceOval!.points[19].x.toDouble())/2 ;
           double faceOvalBottomCenterPointY = faceOval!.points[18].y.toDouble();
 
 
           double extendSizeLeft = 0;
-          double extendSizeRight = 0;
+          double extendSizeRight = 0.08;
           // bool opposite = false;
           if ((face.headEulerAngleY ?? 20) > 0) {
             print('the opposite is true: ${face.headEulerAngleY}');
